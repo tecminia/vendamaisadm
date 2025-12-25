@@ -11,6 +11,19 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <style>
+        :root {
+            --primary-color: #000000;
+            --secondary-color: #ffffff;
+            --accent-color: #007bff;
+            --text-color: #000000;
+            --text-secondary: #666666;
+            --background-light: #f8f8f8;
+            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.2);
+            --border-radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -26,8 +39,8 @@
         html, body {
             height: 100%;
             overflow: hidden;
-            background: #ffffff;
-            color: #000000;
+            background: var(--secondary-color);
+            color: var(--text-color);
         }
         
         body {
@@ -36,16 +49,29 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
         }
         
         .admin-login-container {
             max-width: 400px;
             width: 100%;
-            background-color: #ffffff;
-            border-radius: 20px;
+            background-color: var(--secondary-color);
+            border-radius: var(--border-radius);
             padding: 50px 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 2px solid #000000;
+            box-shadow: var(--shadow-light);
+            border: 2px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
         }
         
         .logo-section {
@@ -55,44 +81,60 @@
         
         .logo-icon {
             font-size: 3.5rem;
-            color: #000000;
+            color: var(--primary-color);
             margin-bottom: 25px;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .logo-section h1 {
             font-size: 2rem;
-            color: #000000;
+            color: var(--primary-color);
             margin-bottom: 10px;
             font-weight: 600;
             letter-spacing: -0.5px;
         }
         
         .logo-section p {
-            color: #666666;
+            color: var(--text-secondary);
             font-size: 0.95rem;
             margin-bottom: 30px;
             line-height: 1.5;
         }
         
         .admin-info {
-            background-color: #f8f8f8;
+            background-color: var(--background-light);
             border-radius: 12px;
             padding: 20px;
             margin: 30px 0;
             text-align: center;
-            border: 2px solid #000000;
+            border: 2px solid var(--primary-color);
+            position: relative;
+        }
+        
+        .admin-info::before {
+            content: '⚠️';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary-color);
+            padding: 0 10px;
+            font-size: 1.2rem;
         }
         
         .admin-info h3 {
-            color: #000000;
+            color: var(--primary-color);
             margin-bottom: 10px;
             font-size: 1.1rem;
             font-weight: 500;
         }
         
         .admin-info p {
-            color: #666666;
+            color: var(--text-secondary);
             font-size: 0.85rem;
             line-height: 1.5;
         }
@@ -103,7 +145,7 @@
             border: none;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: var(--transition);
             font-size: 1rem;
             width: 100%;
             display: flex;
@@ -111,25 +153,51 @@
             justify-content: center;
             gap: 12px;
             letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
         }
         
         .btn-google {
-            background-color: #ffffff;
-            color: #000000;
-            border: 2px solid #000000;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+            border: 2px solid var(--primary-color);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         
         .btn-google:hover {
-            background-color: #000000;
-            color: #ffffff;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-hover);
         }
         
         .btn-google:active {
             transform: translateY(0);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-google:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
         }
         
         .notification {
@@ -151,35 +219,54 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            border: 2px solid #000000;
+            border: 2px solid var(--primary-color);
+            backdrop-filter: blur(10px);
         }
         
         .notification.success {
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.95);
             color: #000000;
-            border: 2px solid #000000;
+            border-color: #4CAF50;
         }
         
         .notification.error {
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.95);
             color: #000000;
-            border: 2px solid #000000;
+            border-color: #F44336;
         }
         
         .notification.info {
-            background-color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.95);
             color: #000000;
-            border: 2px solid #000000;
+            border-color: #2196F3;
+        }
+        
+        .notification.warning {
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #000000;
+            border-color: #FF9800;
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            from { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
         }
         
         @keyframes fadeOut {
-            from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            to { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+            from { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+            to { 
+                opacity: 0; 
+                transform: translate(-50%, -50%) scale(0.9); 
+            }
         }
         
         .loading {
@@ -188,7 +275,7 @@
             height: 20px;
             border: 3px solid rgba(0, 0, 0, 0.2);
             border-radius: 50%;
-            border-top-color: #000000;
+            border-top-color: var(--primary-color);
             animation: spin 1s ease-in-out infinite;
         }
         
@@ -196,9 +283,19 @@
             to { transform: rotate(360deg); }
         }
         
+        .version {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+        
         @media (max-width: 480px) {
             .admin-login-container {
                 padding: 40px 25px;
+                margin: 10px;
             }
             
             .logo-section h1 {
@@ -212,6 +309,25 @@
             .btn {
                 padding: 16px 20px;
             }
+            
+            body {
+                padding: 10px;
+            }
+        }
+        
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+        
+        /* Focus styles for accessibility */
+        .btn:focus-visible {
+            outline: 3px solid var(--accent-color);
+            outline-offset: 2px;
         }
         
         /* Prevent text selection on non-editable elements */
@@ -225,6 +341,11 @@
             -ms-user-select: none;
             user-select: none;
         }
+        
+        /* Allow text selection for error messages and important info */
+        .notification {
+            user-select: text;
+        }
     </style>
 </head>
 <body>
@@ -237,19 +358,24 @@
             <p>Acesso exclusivo ao Painel Administrativo</p>
             
             <div class="admin-info">
-                <h3>Painel de Controle</h3>
-                <p>Utilize sua conta Google para acessar e gerenciar usuários, pagamentos e configurações do sistema.</p>
+                <h3>⚠️ Acesso Restrito</h3>
+                <p>Somente administradores autorizados podem acessar este painel. Utilize sua conta Google corporativa.</p>
             </div>
         </div>
         
         <div class="google-login-section">
-            <button class="btn btn-google" id="googleLoginBtn">
+            <button class="btn btn-google" id="googleLoginBtn" aria-label="Entrar com Google">
                 <i class="fab fa-google"></i> Entrar com Google
             </button>
         </div>
+        
+        <div class="version">v1.0.0</div>
     </div>
 
     <script>
+        // Configuração MASTER ADMIN - DEFINA AQUI O EMAIL PRINCIPAL
+        const MASTER_ADMIN_EMAIL = 'tecminia@gmail.com'; // ALTERE PARA SEU EMAIL
+        
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB7U-JfKAlkPxSyL4AEf5u0BgcDzSXf41M",
@@ -268,174 +394,322 @@
         // DOM Elements
         const googleLoginBtn = document.getElementById('googleLoginBtn');
 
-        // Check if already logged in
+        // Configuração de tempo de sessão (8 horas)
+        const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
+
+        // Verificar se já está logado
         document.addEventListener('DOMContentLoaded', async () => {
-            const adminSession = localStorage.getItem('adminSession');
-            if (adminSession) {
-                try {
+            try {
+                const adminSession = localStorage.getItem('adminSession');
+                if (adminSession) {
                     const sessionData = JSON.parse(adminSession);
                     const sessionAge = new Date() - new Date(sessionData.timestamp);
-                    const maxAge = 8 * 60 * 60 * 1000; // 8 hours
                     
-                    if (sessionAge < maxAge) {
-                        // Try to validate with Firebase Auth
+                    if (sessionAge < SESSION_MAX_AGE) {
+                        // Validar com Firebase Auth
                         try {
+                            await auth.authStateReady();
                             const user = auth.currentUser;
+                            
                             if (user && user.email === sessionData.email) {
-                                window.location.href = 'index.html';
-                                return;
+                                // Verificar claims customizados (se existirem)
+                                const idTokenResult = await user.getIdTokenResult();
+                                
+                                if (idTokenResult.claims.admin === true || 
+                                    idTokenResult.claims.role === 'admin') {
+                                    redirectToAdminPanel();
+                                    return;
+                                }
                             }
                         } catch (authError) {
-                            console.log('Auth check failed, proceeding with session');
+                            console.warn('Erro na validação do Firebase:', authError);
                         }
                         
-                        // Proceed with session only
-                        window.location.href = 'index.html';
+                        // Tentar redirecionar baseado apenas na sessão (fallback)
+                        if (await isValidAdmin(sessionData.email)) {
+                            redirectToAdminPanel();
+                            return;
+                        } else {
+                            localStorage.removeItem('adminSession');
+                        }
                     } else {
                         localStorage.removeItem('adminSession');
                     }
-                } catch (error) {
-                    localStorage.removeItem('adminSession');
                 }
+                
+                // Inicializar admin padrão
+                await initializeAdminSystem();
+            } catch (error) {
+                console.error('Erro ao inicializar:', error);
+                showNotification('Erro ao carregar o sistema', 'error', 5000);
             }
-            
-            // Initialize authorized admin
-            await createDefaultAdmin();
         });
 
-        // Google login handler
-        googleLoginBtn.addEventListener('click', async () => {
+        // Handler de login com Google
+        googleLoginBtn.addEventListener('click', handleGoogleLogin);
+
+        async function handleGoogleLogin() {
             try {
-                googleLoginBtn.innerHTML = '<div class="loading"></div>';
-                googleLoginBtn.disabled = true;
+                // Desabilitar botão e mostrar loading
+                setButtonLoading(true);
                 
-                // Configure Google provider
+                // Configurar provider do Google
                 const provider = new firebase.auth.GoogleAuthProvider();
-                provider.addScope('email');
-                provider.addScope('profile');
+                provider.setCustomParameters({
+                    prompt: 'select_account',
+                    login_hint: 'admin@seusistema.com' // Sugestão de email
+                });
                 
-                // Sign in with popup
+                // Login com popup
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
                 
-                // Check if user is authorized admin
-                const adminDoc = await db.collection('admin').doc('authorizedUsers').get();
-                const authorizedAdmins = adminDoc.exists ? adminDoc.data().emails || [] : [];
+                // Verificar se é administrador autorizado
+                const isAuthorized = await verifyAdminAuthorization(user.email);
                 
-                // Add default admin if no authorized users exist
-                if (authorizedAdmins.length === 0) {
-                    authorizedAdmins.push(user.email);
-                    await db.collection('admin').doc('authorizedUsers').set({
+                if (!isAuthorized) {
+                    await auth.signOut();
+                    showNotification('Acesso não autorizado. Contate o administrador do sistema.', 'error');
+                    setButtonLoading(false);
+                    return;
+                }
+                
+                // Criar sessão de administrador
+                await createAdminSession(user);
+                
+                // Atualizar informações no Firestore
+                await updateAdminRecord(user);
+                
+                // Mostrar sucesso e redirecionar
+                showNotification('Login realizado com sucesso!', 'success');
+                setTimeout(redirectToAdminPanel, 1000);
+                
+            } catch (error) {
+                handleLoginError(error);
+            }
+        }
+
+        // Funções auxiliares
+        async function verifyAdminAuthorization(userEmail) {
+            try {
+                const adminDoc = await db.collection('admin')
+                    .doc('authorizedUsers')
+                    .get();
+                
+                if (!adminDoc.exists) {
+                    // Se não existir, criar com o MASTER_ADMIN
+                    await createInitialAdminConfig(userEmail);
+                    return userEmail === MASTER_ADMIN_EMAIL;
+                }
+                
+                const authorizedAdmins = adminDoc.data().emails || [];
+                
+                // Se não houver administradores, adicionar o primeiro como master
+                if (authorizedAdmins.length === 0 && userEmail === MASTER_ADMIN_EMAIL) {
+                    authorizedAdmins.push(userEmail);
+                    await db.collection('admin').doc('authorizedUsers').update({
                         emails: authorizedAdmins,
-                        createdAt: new Date().toISOString(),
                         updatedAt: new Date().toISOString()
                     });
                 }
                 
-                if (!authorizedAdmins.includes(user.email)) {
-                    // User not authorized
-                    await auth.signOut();
-                    showNotification('Acesso não autorizado. Contate o administrador.', 'error');
-                    googleLoginBtn.innerHTML = '<i class="fab fa-google"></i> Entrar com Google';
-                    googleLoginBtn.disabled = false;
-                    return;
-                }
-                
-                // Create admin session
-                const adminSession = {
-                    uid: user.uid,
-                    email: user.email,
-                    name: user.displayName,
-                    photoURL: user.photoURL,
-                    loggedIn: true,
-                    timestamp: new Date().toISOString()
-                };
-                
-                // Save to localStorage
-                localStorage.setItem('adminSession', JSON.stringify(adminSession));
-                
-                // Save admin info to Firestore
-                await db.collection('admin').doc('users').collection('admins').doc(user.uid).set({
+                return authorizedAdmins.includes(userEmail);
+            } catch (error) {
+                console.error('Erro ao verificar autorização:', error);
+                return false;
+            }
+        }
+
+        async function createInitialAdminConfig(firstAdminEmail) {
+            try {
+                await db.collection('admin').doc('authorizedUsers').set({
+                    emails: firstAdminEmail === MASTER_ADMIN_EMAIL ? 
+                            [MASTER_ADMIN_EMAIL] : [],
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString(),
+                    createdBy: 'system',
+                    masterAdmin: MASTER_ADMIN_EMAIL
+                });
+            } catch (error) {
+                console.error('Erro ao criar configuração inicial:', error);
+            }
+        }
+
+        async function createAdminSession(user) {
+            const adminSession = {
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName,
+                photoURL: user.photoURL,
+                loggedIn: true,
+                timestamp: new Date().toISOString(),
+                sessionId: generateSessionId()
+            };
+            
+            localStorage.setItem('adminSession', JSON.stringify(adminSession));
+        }
+
+        async function updateAdminRecord(user) {
+            try {
+                const adminData = {
                     email: user.email,
                     name: user.displayName,
                     photoURL: user.photoURL,
                     lastLogin: new Date().toISOString(),
                     googleAuth: true,
-                    isActive: true
-                }, { merge: true });
+                    isActive: true,
+                    loginCount: firebase.firestore.FieldValue.increment(1),
+                    updatedAt: new Date().toISOString()
+                };
                 
-                // Show success and redirect
-                showNotification('Login realizado com sucesso!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
-                
+                await db.collection('admin')
+                    .doc('users')
+                    .collection('admins')
+                    .doc(user.uid)
+                    .set(adminData, { merge: true });
             } catch (error) {
-                console.error('Google login error:', error);
-                
-                let errorMessage = 'Erro ao fazer login com Google.';
-                if (error.code === 'auth/popup-closed-by-user') {
-                    errorMessage = 'Login cancelado pelo usuário.';
-                } else if (error.code === 'auth/account-exists-with-different-credential') {
-                    errorMessage = 'Esta conta já está cadastrada com outro método.';
-                } else if (error.code === 'auth/popup-blocked') {
+                console.error('Erro ao atualizar registro:', error);
+            }
+        }
+
+        function handleLoginError(error) {
+            console.error('Erro no login:', error);
+            
+            let errorMessage = 'Erro ao fazer login com Google.';
+            let errorType = 'error';
+            
+            switch (error.code) {
+                case 'auth/popup-closed-by-user':
+                    errorMessage = 'Login cancelado.';
+                    errorType = 'warning';
+                    break;
+                case 'auth/account-exists-with-different-credential':
+                    errorMessage = 'Esta conta já está cadastrada com outro método de login.';
+                    break;
+                case 'auth/popup-blocked':
                     errorMessage = 'Pop-up bloqueado. Por favor, permita pop-ups para este site.';
-                } else if (error.code === 'auth/network-request-failed') {
+                    break;
+                case 'auth/network-request-failed':
                     errorMessage = 'Erro de conexão. Verifique sua internet.';
-                }
-                
-                showNotification(errorMessage, 'error');
+                    break;
+                case 'auth/unauthorized-domain':
+                    errorMessage = 'Domínio não autorizado para login.';
+                    break;
+                case 'auth/operation-not-allowed':
+                    errorMessage = 'Operação não permitida. Contate o suporte.';
+                    break;
+            }
+            
+            showNotification(errorMessage, errorType);
+            setButtonLoading(false);
+        }
+
+        function setButtonLoading(isLoading) {
+            if (isLoading) {
+                googleLoginBtn.innerHTML = '<div class="loading"></div>';
+                googleLoginBtn.disabled = true;
+            } else {
                 googleLoginBtn.innerHTML = '<i class="fab fa-google"></i> Entrar com Google';
                 googleLoginBtn.disabled = false;
             }
-        });
+        }
 
-        // Helper functions
         function showNotification(message, type = 'info', duration = 3000) {
+            // Remover notificações existentes
             const existingNotifications = document.querySelectorAll('.notification');
             existingNotifications.forEach(notification => {
                 notification.remove();
             });
             
+            // Criar nova notificação
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
-            notification.textContent = message;
+            notification.setAttribute('role', 'alert');
+            notification.setAttribute('aria-live', 'assertive');
+            
+            // Adicionar ícone baseado no tipo
+            let icon = 'ℹ️';
+            switch(type) {
+                case 'success': icon = '✅'; break;
+                case 'error': icon = '❌'; break;
+                case 'warning': icon = '⚠️'; break;
+            }
+            
+            notification.innerHTML = `${icon} <span>${message}</span>`;
             document.body.appendChild(notification);
             
+            // Auto-remover após duração
             setTimeout(() => {
                 notification.style.animation = 'fadeOut 0.3s ease';
                 setTimeout(() => {
                     if (notification.parentNode) {
-                        document.body.removeChild(notification);
+                        notification.remove();
                     }
                 }, 300);
             }, duration);
         }
 
-        // Create default authorized admin if not exists
-        async function createDefaultAdmin() {
+        async function initializeAdminSystem() {
             try {
                 const adminDoc = await db.collection('admin').doc('authorizedUsers').get();
                 
                 if (!adminDoc.exists) {
-                    // Create empty list - first Google login will be added
                     await db.collection('admin').doc('authorizedUsers').set({
                         emails: [],
                         createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString()
+                        updatedAt: new Date().toISOString(),
+                        createdBy: 'system',
+                        masterAdmin: MASTER_ADMIN_EMAIL,
+                        settings: {
+                            maxAdmins: 5,
+                            requireTwoFactor: false,
+                            sessionTimeout: 8
+                        }
                     });
                 }
             } catch (error) {
-                console.log('Não foi possível criar configurações de admin:', error);
+                console.warn('Não foi possível inicializar sistema admin:', error);
             }
         }
 
-        // Handle auth state changes
+        async function isValidAdmin(email) {
+            try {
+                const adminDoc = await db.collection('admin').doc('authorizedUsers').get();
+                if (!adminDoc.exists) return false;
+                
+                const authorizedAdmins = adminDoc.data().emails || [];
+                return authorizedAdmins.includes(email);
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function redirectToAdminPanel() {
+            // Usar replace para evitar voltar para login
+            window.location.replace('index.html');
+        }
+
+        function generateSessionId() {
+            return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        // Monitorar estado de autenticação
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('Usuário autenticado:', user.email);
-            } else {
-                console.log('Usuário não autenticado');
+                
+                // Atualizar token claims se necessário
+                user.getIdTokenResult(true).then((idTokenResult) => {
+                    console.log('Claims do usuário:', idTokenResult.claims);
+                });
+            }
+        });
+
+        // Prevenir F5 para recarregar a página
+        window.addEventListener('beforeunload', (e) => {
+            if (googleLoginBtn.disabled) {
+                e.preventDefault();
+                e.returnValue = '';
             }
         });
     </script>

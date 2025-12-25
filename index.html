@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecionando...</title>
+    <title>index</title>
+    <link rel="icon" href="favicon.ico">
     <style>
         /* Oculta tudo imediatamente */
         body {
@@ -16,31 +17,41 @@
         }
     </style>
     <script>
-        // Executa imediatamente sem esperar DOMContentLoaded
-        (function() {
-            try {
-                const adminSession = localStorage.getItem('adminSession');
-                
-                if (adminSession) {
-                    const sessionData = JSON.parse(adminSession);
-                    const sessionAge = new Date() - new Date(sessionData.timestamp);
-                    const maxAge = 8 * 60 * 60 * 1000; // 8 horas
-                    
-                    if (sessionAge <= maxAge) {
-                        window.location.replace('admin.html');
-                        return;
-                    } else {
-                        localStorage.removeItem('adminSession');
-                    }
-                }
-                
-                window.location.replace('login.html');
-                
-            } catch (error) {
-                window.location.replace('login.html');
-            }
-        })();
-    </script>
+(function () {
+    try {
+        const raw = localStorage.getItem('adminSession');
+        if (!raw) {
+            location.replace('login.html');
+            return;
+        }
+
+        const data = JSON.parse(raw);
+        if (!data.timestamp) {
+            localStorage.removeItem('adminSession');
+            location.replace('login.html');
+            return;
+        }
+
+        const timestamp = new Date(data.timestamp).getTime();
+        if (!timestamp) {
+            localStorage.removeItem('adminSession');
+            location.replace('login.html');
+            return;
+        }
+
+        const maxAge = 8 * 60 * 60 * 1000;
+        if (Date.now() - timestamp <= maxAge) {
+            location.replace('admin.html');
+        } else {
+            localStorage.removeItem('adminSession');
+            location.replace('login.html');
+        }
+
+    } catch {
+        location.replace('login.html');
+    }
+})();
+</script>
 </head>
 <body>
 </body>
