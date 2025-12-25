@@ -4,45 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecionando...</title>
+    <style>
+        /* Oculta tudo imediatamente */
+        body {
+            margin: 0;
+            padding: 0;
+            background: white;
+            opacity: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+    </style>
     <script>
-        // Verifica se há sessão de admin no localStorage
-        function verificarSessao() {
+        // Executa imediatamente sem esperar DOMContentLoaded
+        (function() {
             try {
                 const adminSession = localStorage.getItem('adminSession');
                 
                 if (adminSession) {
-                    // Verifica se a sessão ainda é válida (8 horas)
                     const sessionData = JSON.parse(adminSession);
                     const sessionAge = new Date() - new Date(sessionData.timestamp);
                     const maxAge = 8 * 60 * 60 * 1000; // 8 horas
                     
                     if (sessionAge <= maxAge) {
-                        // Sessão válida, vai para admin.html
-                        window.location.href = 'admin.html';
+                        window.location.replace('admin.html');
                         return;
                     } else {
-                        // Sessão expirada, remove e vai para login
                         localStorage.removeItem('adminSession');
                     }
                 }
                 
-                // Se não tem sessão válida, vai para login
-                window.location.href = 'login.html';
+                window.location.replace('login.html');
                 
             } catch (error) {
-                // Em caso de erro, vai para login
-                console.error('Erro ao verificar sessão:', error);
-                window.location.href = 'login.html';
+                window.location.replace('login.html');
             }
-        }
-        
-        // Executa a verificação quando a página carrega
-        document.addEventListener('DOMContentLoaded', verificarSessao);
+        })();
     </script>
 </head>
 <body>
-    <p style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
-        Redirecionando...
-    </p>
 </body>
 </html>

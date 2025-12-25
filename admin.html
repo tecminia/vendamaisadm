@@ -1183,7 +1183,7 @@ Equipe Venda+ 📱
                 // Check for admin session in localStorage
                 const adminSession = localStorage.getItem('adminSession');
                 if (!adminSession) {
-                    window.location.href = 'login.html';
+                    redirectToLogin();
                     return;
                 }
                 
@@ -1199,7 +1199,7 @@ Equipe Venda+ 📱
                     localStorage.removeItem('adminSession');
                     showNotification('Sessão expirada. Faça login novamente.', 'error');
                     setTimeout(() => {
-                        window.location.href = 'login.html';
+                        redirectToLogin();
                     }, 2000);
                     return;
                 }
@@ -1226,8 +1226,19 @@ Equipe Venda+ 📱
             } catch (error) {
                 console.error('Admin auth error:', error);
                 localStorage.removeItem('adminSession');
-                window.location.href = 'login.html';
+                redirectToLogin();
             }
+        }
+
+        // Function to redirect to login page
+        function redirectToLogin() {
+            // Show notification
+            showNotification('Acesso não autorizado. Redirecionando para login...', 'error');
+            
+            // Redirect to login page after a short delay
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
         }
 
         // Update admin info display
