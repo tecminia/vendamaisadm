@@ -3,19 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index</title>
-    <link rel="icon" href="favicon.ico">
-    <style>
-        /* Oculta tudo imediatamente */
-        body {
-            margin: 0;
-            padding: 0;
-            background: white;
-            opacity: 0;
-            height: 100vh;
-            overflow: hidden;
-        }
-    </style>
+    <title>Redirecionando...</title>
     <script>
 (function () {
     try {
@@ -41,6 +29,7 @@
 
         const maxAge = 8 * 60 * 60 * 1000;
         if (Date.now() - timestamp <= maxAge) {
+            // Redireciona DIRETAMENTE para admin.html se já logado
             location.replace('admin.html');
         } else {
             localStorage.removeItem('adminSession');
@@ -51,8 +40,9 @@
         location.replace('login.html');
     }
 })();
-</script>
+    </script>
 </head>
 <body>
+    <p>Redirecionando...</p>
 </body>
 </html>

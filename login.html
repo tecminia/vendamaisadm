@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tecminia</title>
+    <title>Tecminia Admin</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
@@ -14,10 +14,9 @@
         :root {
             --primary-color: #000000;
             --secondary-color: #ffffff;
-            --accent-color: #007bff;
             --text-color: #000000;
             --text-secondary: #666666;
-            --background-light: #f8f8f8;
+            --background-light: #f5f5f5;
             --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
             --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.2);
             --border-radius: 20px;
@@ -49,7 +48,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e5e5e5 100%);
         }
         
         .admin-login-container {
@@ -71,7 +70,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            background: var(--primary-color);
         }
         
         .logo-section {
@@ -84,10 +83,6 @@
             color: var(--primary-color);
             margin-bottom: 25px;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .logo-section h1 {
@@ -116,7 +111,7 @@
         }
         
         .admin-info::before {
-            content: '⚠️';
+            content: '';
             position: absolute;
             top: -12px;
             left: 50%;
@@ -124,6 +119,8 @@
             background: var(--secondary-color);
             padding: 0 10px;
             font-size: 1.2rem;
+            color: var(--primary-color);
+            font-weight: bold;
         }
         
         .admin-info h3 {
@@ -224,27 +221,27 @@
         }
         
         .notification.success {
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #000000;
-            border-color: #4CAF50;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: #ffffff;
+            border-color: #000000;
         }
         
         .notification.error {
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #000000;
-            border-color: #F44336;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: #ffffff;
+            border-color: #000000;
         }
         
         .notification.info {
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #000000;
-            border-color: #2196F3;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: #ffffff;
+            border-color: #000000;
         }
         
         .notification.warning {
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #000000;
-            border-color: #FF9800;
+            background-color: rgba(0, 0, 0, 0.95);
+            color: #ffffff;
+            border-color: #000000;
         }
         
         @keyframes fadeIn {
@@ -315,7 +312,6 @@
             }
         }
         
-        /* Accessibility improvements */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -324,13 +320,11 @@
             }
         }
         
-        /* Focus styles for accessibility */
         .btn:focus-visible {
-            outline: 3px solid var(--accent-color);
+            outline: 3px solid var(--primary-color);
             outline-offset: 2px;
         }
         
-        /* Prevent text selection on non-editable elements */
         .admin-login-container,
         .logo-section,
         .admin-info,
@@ -342,23 +336,46 @@
             user-select: none;
         }
         
-        /* Allow text selection for error messages and important info */
         .notification {
             user-select: text;
         }
     </style>
 </head>
+<script>
+(function() {
+    try {
+        const raw = localStorage.getItem('adminSession');
+        if (raw) {
+            const data = JSON.parse(raw);
+            if (data.timestamp) {
+                const timestamp = new Date(data.timestamp).getTime();
+                const maxAge = 8 * 60 * 60 * 1000;
+                
+                if (timestamp && Date.now() - timestamp <= maxAge) {
+                    // Já está logado, vai direto para admin
+                    location.replace('admin.html');
+                } else {
+                    // Sessão expirada
+                    localStorage.removeItem('adminSession');
+                }
+            }
+        }
+    } catch(e) {
+        console.error('Erro ao verificar sessão:', e);
+    }
+})();
+</script>
 <body>
     <div class="admin-login-container">
         <div class="logo-section">
             <div class="logo-icon">
                 <i class="fas fa-user-shield"></i>
             </div>
-            <h1>Venda+ Admin</h1>
+            <h1>Tecminia Admin</h1>
             <p>Acesso exclusivo ao Painel Administrativo</p>
             
             <div class="admin-info">
-                <h3>⚠️ Acesso Restrito</h3>
+                <h3>Acesso Restrito</h3>
                 <p>Somente administradores autorizados podem acessar este painel. Utilize sua conta Google corporativa.</p>
             </div>
         </div>
@@ -373,10 +390,8 @@
     </div>
 
     <script>
-        // Configuração MASTER ADMIN - DEFINA AQUI O EMAIL PRINCIPAL
-        const MASTER_ADMIN_EMAIL = 'tecminia@gmail.com'; // ALTERE PARA SEU EMAIL
+        const MASTER_ADMIN_EMAIL = 'tecminia@gmail.com';
         
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB7U-JfKAlkPxSyL4AEf5u0BgcDzSXf41M",
             authDomain: "appvendas-1eebf.firebaseapp.com",
@@ -386,18 +401,13 @@
             appId: "1:229472373918:web:39cd4940b052b2375f3f8f"
         };
 
-        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // DOM Elements
         const googleLoginBtn = document.getElementById('googleLoginBtn');
-
-        // Configuração de tempo de sessão (8 horas)
         const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
 
-        // Verificar se já está logado
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const adminSession = localStorage.getItem('adminSession');
@@ -406,13 +416,11 @@
                     const sessionAge = new Date() - new Date(sessionData.timestamp);
                     
                     if (sessionAge < SESSION_MAX_AGE) {
-                        // Validar com Firebase Auth
                         try {
                             await auth.authStateReady();
                             const user = auth.currentUser;
                             
                             if (user && user.email === sessionData.email) {
-                                // Verificar claims customizados (se existirem)
                                 const idTokenResult = await user.getIdTokenResult();
                                 
                                 if (idTokenResult.claims.admin === true || 
@@ -425,7 +433,6 @@
                             console.warn('Erro na validação do Firebase:', authError);
                         }
                         
-                        // Tentar redirecionar baseado apenas na sessão (fallback)
                         if (await isValidAdmin(sessionData.email)) {
                             redirectToAdminPanel();
                             return;
@@ -437,7 +444,6 @@
                     }
                 }
                 
-                // Inicializar admin padrão
                 await initializeAdminSystem();
             } catch (error) {
                 console.error('Erro ao inicializar:', error);
@@ -445,26 +451,21 @@
             }
         });
 
-        // Handler de login com Google
         googleLoginBtn.addEventListener('click', handleGoogleLogin);
 
         async function handleGoogleLogin() {
             try {
-                // Desabilitar botão e mostrar loading
                 setButtonLoading(true);
                 
-                // Configurar provider do Google
                 const provider = new firebase.auth.GoogleAuthProvider();
                 provider.setCustomParameters({
                     prompt: 'select_account',
-                    login_hint: 'admin@seusistema.com' // Sugestão de email
+                    login_hint: 'admin@seusistema.com'
                 });
                 
-                // Login com popup
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
                 
-                // Verificar se é administrador autorizado
                 const isAuthorized = await verifyAdminAuthorization(user.email);
                 
                 if (!isAuthorized) {
@@ -474,13 +475,9 @@
                     return;
                 }
                 
-                // Criar sessão de administrador
                 await createAdminSession(user);
-                
-                // Atualizar informações no Firestore
                 await updateAdminRecord(user);
                 
-                // Mostrar sucesso e redirecionar
                 showNotification('Login realizado com sucesso!', 'success');
                 setTimeout(redirectToAdminPanel, 1000);
                 
@@ -489,7 +486,6 @@
             }
         }
 
-        // Funções auxiliares
         async function verifyAdminAuthorization(userEmail) {
             try {
                 const adminDoc = await db.collection('admin')
@@ -497,14 +493,12 @@
                     .get();
                 
                 if (!adminDoc.exists) {
-                    // Se não existir, criar com o MASTER_ADMIN
                     await createInitialAdminConfig(userEmail);
                     return userEmail === MASTER_ADMIN_EMAIL;
                 }
                 
                 const authorizedAdmins = adminDoc.data().emails || [];
                 
-                // Se não houver administradores, adicionar o primeiro como master
                 if (authorizedAdmins.length === 0 && userEmail === MASTER_ADMIN_EMAIL) {
                     authorizedAdmins.push(userEmail);
                     await db.collection('admin').doc('authorizedUsers').update({
@@ -615,30 +609,19 @@
         }
 
         function showNotification(message, type = 'info', duration = 3000) {
-            // Remover notificações existentes
             const existingNotifications = document.querySelectorAll('.notification');
             existingNotifications.forEach(notification => {
                 notification.remove();
             });
             
-            // Criar nova notificação
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.setAttribute('role', 'alert');
             notification.setAttribute('aria-live', 'assertive');
             
-            // Adicionar ícone baseado no tipo
-            let icon = 'ℹ️';
-            switch(type) {
-                case 'success': icon = '✅'; break;
-                case 'error': icon = '❌'; break;
-                case 'warning': icon = '⚠️'; break;
-            }
-            
-            notification.innerHTML = `${icon} <span>${message}</span>`;
+            notification.innerHTML = `<span>${message}</span>`;
             document.body.appendChild(notification);
             
-            // Auto-remover após duração
             setTimeout(() => {
                 notification.style.animation = 'fadeOut 0.3s ease';
                 setTimeout(() => {
@@ -685,7 +668,6 @@
         }
 
         function redirectToAdminPanel() {
-            // Usar replace para evitar voltar para login
             window.location.replace('index.html');
         }
 
@@ -693,19 +675,16 @@
             return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Monitorar estado de autenticação
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('Usuário autenticado:', user.email);
                 
-                // Atualizar token claims se necessário
                 user.getIdTokenResult(true).then((idTokenResult) => {
                     console.log('Claims do usuário:', idTokenResult.claims);
                 });
             }
         });
 
-        // Prevenir F5 para recarregar a página
         window.addEventListener('beforeunload', (e) => {
             if (googleLoginBtn.disabled) {
                 e.preventDefault();
