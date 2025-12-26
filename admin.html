@@ -580,7 +580,7 @@
             outline: none;
         }
         
-        /* IMAGE VIEWER - ZOOM COM PINÇA */
+        /* IMAGE VIEWER - ZOOM COM BOTÕES */
         .image-viewer-overlay {
             position: fixed;
             top: 0;
@@ -592,7 +592,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            touch-action: none;
+            touch-action: pan-x pan-y;
             -webkit-user-select: none;
             user-select: none;
         }
@@ -614,7 +614,7 @@
             transform-origin: 0 0;
             transition: transform 0.1s ease-out;
             cursor: grab;
-            touch-action: none;
+            touch-action: pan-x pan-y;
         }
         
         .image-viewer-img:active {
@@ -691,7 +691,7 @@
             background: #f8f9fa;
             margin-bottom: 16px;
             border: 2px solid var(--border-color);
-            touch-action: none;
+            touch-action: pan-x pan-y;
         }
         
         .receipt-preview-img {
@@ -884,7 +884,7 @@
     <!-- Status Bar -->
     <div class="status-bar"></div>
     
-    <!-- Image Viewer para Zoom com Pinça -->
+    <!-- Image Viewer para Zoom com Botões -->
     <div class="image-viewer-overlay" id="imageViewer">
         <div class="image-viewer-container">
             <img class="image-viewer-img" id="imageViewerImg" alt="Comprovante">
@@ -903,7 +903,7 @@
                 </button>
             </div>
             <div class="image-viewer-zoom-info" id="imageViewerZoomInfo">100%</div>
-            <div class="image-viewer-hint">Use dois dedos para dar zoom • Arraste para mover</div>
+            <div class="image-viewer-hint">Use os botões para dar zoom • Arraste para mover</div>
         </div>
     </div>
     
@@ -1286,8 +1286,6 @@ Equipe Venda+ 📱
         let isDragging = false;
         let dragStartX = 0;
         let dragStartY = 0;
-        let initialPinchDistance = null;
-        let initialPinchScale = 1;
 
         // DOM Elements
         const refreshBtn = document.getElementById('refreshBtn');
@@ -1358,7 +1356,7 @@ Equipe Venda+ 📱
             updateAdminInfo();
         }
 
-        // Setup Image Viewer functionality
+        // Setup Image Viewer functionality (SEM PINÇA)
         function setupImageViewer() {
             // Zoom buttons
             imageViewerZoomIn.addEventListener('click', () => zoomImageViewer(1.2));
@@ -1366,125 +1364,46 @@ Equipe Venda+ 📱
             imageViewerReset.addEventListener('click', resetImageViewer);
             imageViewerClose.addEventListener('click', () => imageViewer.style.display = 'none');
             
-            // Mouse wheel zoom
+            // Mouse wheel zoom (desktop)
             imageViewerImg.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 const delta = e.deltaY > 0 ? 0.8 : 1.2;
                 zoomImageViewer(delta, e.clientX, e.clientY);
             });
             
-            // Mouse drag
+            // Mouse drag (desktop)
             imageViewerImg.addEventListener('mousedown', startDrag);
             document.addEventListener('mousemove', doDrag);
             document.addEventListener('mouseup', stopDrag);
             
-            // Touch events for pinch zoom
-            let touchCache = [];
-            
+            // Touch events for single finger drag (mobile)
             imageViewerImg.addEventListener('touchstart', (e) => {
                 e.preventDefault();
-                touchCache = [];
-                
-                for (let i = 0; i < e.touches.length; i++) {
-                    touchCache.push({
-                        id: e.touches[i].identifier,
-                        x: e.touches[i].clientX,
-                        y: e.touches[i].clientY
-                    });
-                }
-                
                 if (e.touches.length === 1) {
-                    startDrag(e.touches[0]);
-                } else if (e.touches.length === 2) {
-                    initialPinchDistance = getDistance(
-                        e.touches[0].clientX, e.touches[0].clientY,
-                        e.touches[1].clientX, e.touches[1].clientY
-                    );
-                    initialPinchScale = imageViewerScale;
+                    startDrag({
+                        clientX: e.touches[0].clientX,
+                        clientY: e.touches[0].clientY
+                    });
                 }
             });
             
             imageViewerImg.addEventListener('touchmove', (e) => {
                 e.preventDefault();
-                
-                if (e.touches.length === 1 && !initialPinchDistance) {
-                    doDrag(e.touches[0]);
-                } else if (e.touches.length === 2 && initialPinchDistance !== null) {
-                    // Pinch zoom
-                    const currentDistance = getDistance(
-                        e.touches[0].clientX, e.touches[0].clientY,
-                        e.touches[1].clientX, e.touches[1].clientY
-                    );
-                    
-                    const scaleFactor = currentDistance / initialPinchDistance;
-                    const newScale = initialPinchScale * scaleFactor;
-                    
-                    // Limit zoom
-                    if (newScale >= 0.1 && newScale <= 5) {
-                        imageViewerScale = newScale;
-                        
-                        // Calculate center point for zoom
-                        const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-                        const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-                        
-                        // Adjust translation to zoom around center
-                        const containerRect = imageViewer.getBoundingClientRect();
-                        const relativeX = centerX - containerRect.left;
-                        const relativeY = centerY - containerRect.top;
-                        
-                        imageViewerTranslateX = relativeX - (relativeX - imageViewerTranslateX) * (imageViewerScale / initialPinchScale);
-                        imageViewerTranslateY = relativeY - (relativeY - imageViewerTranslateY) * (imageViewerScale / initialPinchScale);
-                        
-                        updateImageViewerTransform();
-                    }
-                }
-                
-                // Update touch cache
-                touchCache = [];
-                for (let i = 0; i < e.touches.length; i++) {
-                    touchCache.push({
-                        id: e.touches[i].identifier,
-                        x: e.touches[i].clientX,
-                        y: e.touches[i].clientY
+                if (e.touches.length === 1) {
+                    doDrag({
+                        clientX: e.touches[0].clientX,
+                        clientY: e.touches[0].clientY
                     });
                 }
             });
             
             imageViewerImg.addEventListener('touchend', (e) => {
                 e.preventDefault();
-                
-                if (e.touches.length === 0) {
-                    // All touches ended
-                    initialPinchDistance = null;
-                    stopDrag();
-                } else if (e.touches.length === 1) {
-                    // One finger left, switch to dragging
-                    initialPinchDistance = null;
-                    const touch = e.touches[0];
-                    const cachedTouch = touchCache.find(t => t.id === touch.identifier);
-                    if (cachedTouch) {
-                        startDrag({
-                            clientX: cachedTouch.x,
-                            clientY: cachedTouch.y
-                        });
-                    }
-                } else if (e.touches.length === 2) {
-                    // Still two fingers, update initial distance
-                    initialPinchDistance = getDistance(
-                        e.touches[0].clientX, e.touches[0].clientY,
-                        e.touches[1].clientX, e.touches[1].clientY
-                    );
-                    initialPinchScale = imageViewerScale;
-                }
+                stopDrag();
             });
             
             // Double click to reset
             imageViewerImg.addEventListener('dblclick', resetImageViewer);
-        }
-        
-        // Helper function to calculate distance between two points
-        function getDistance(x1, y1, x2, y2) {
-            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         }
         
         // Image Viewer functions
@@ -2305,7 +2224,7 @@ Equipe Venda+ 📱
                                      class="receipt-preview-img"
                                      onclick="openImageViewer('${payment.receiptBase64}')"
                                      style="cursor: pointer;">
-                                <div class="receipt-preview-zoom-hint">Toque na imagem para ampliar • Use dois dedos para dar zoom</div>
+                                <div class="receipt-preview-zoom-hint">Toque na imagem para ampliar • Use os botões para dar zoom</div>
                             </div>
                         </div>
                     `;
