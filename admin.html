@@ -922,7 +922,6 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <!-- BOTÃO DE LOGOUT REMOVIDO - apenas refresh -->
                     <button class="icon-btn" id="refreshBtn" title="Atualizar">
                         <i class="fas fa-sync-alt"></i>
                     </button>
@@ -1109,7 +1108,7 @@ Equipe Venda+ 📱
                     
                     <div class="form-group">
                         <label class="form-label">Admin Logado</label>
-                            <div class="form-input" style="background: #f8f9fa;">
+                        <div class="form-input" style="background: #f8f9fa;">
                             <div id="adminInfo">
                                 <!-- Admin info will be loaded here -->
                             </div>
@@ -2363,7 +2362,7 @@ Equipe Venda+ 📱
             paymentDetailsModal.style.display = 'flex';
         }
 
-        // Approve payment
+        // Approve payment - ATUALIZADO para renovação
         async function approvePayment(paymentId) {
             try {
                 const payment = payments.find(p => p.id === paymentId);
@@ -2378,27 +2377,53 @@ Equipe Venda+ 📱
                     approvedBy: adminUser.email
                 });
                 
-                // Calculate expiry date based on plan
+                // Calculate expiry date based on plan and payment type
                 const expiryDate = new Date();
                 let planDays = 30;
                 
-                if (payment.plan === 'custom' && payment.planDays) {
-                    planDays = parseInt(payment.planDays) || 30;
+                if (payment.type === 'renewal') {
+                    // Para renovação, usar a data original + 30 dias
+                    if (payment.originalExpiryDate) {
+                        const originalDate = new Date(payment.originalExpiryDate);
+                        if (originalDate > new Date()) {
+                            // Se ainda não expirou, adicionar 30 dias a partir da data atual
+                            originalDate.setDate(originalDate.getDate() + 30);
+                            expiryDate.setTime(originalDate.getTime());
+                        } else {
+                            // Se já expirou, começar de hoje
+                            expiryDate.setDate(expiryDate.getDate() + 30);
+                        }
+                    } else {
+                        expiryDate.setDate(expiryDate.getDate() + 30);
+                    }
+                } else {
+                    // Para novo pagamento
+                    if (payment.plan === 'custom' && payment.planDays) {
+                        planDays = parseInt(payment.planDays) || 30;
+                    }
+                    expiryDate.setDate(expiryDate.getDate() + planDays);
                 }
                 
-                expiryDate.setDate(expiryDate.getDate() + planDays);
                 const expiryDateStr = expiryDate.toISOString().split('T')[0];
                 
                 // Update user status and set expiry date
-                await db.collection('users').doc(userId).update({
+                const updateData = {
                     status: 'active',
                     isActive: true,
                     expiryDate: expiryDateStr,
-                    plan: payment.plan || 'monthly',
-                    planDays: payment.planDays || 30,
                     paymentConfirmed: true,
                     lastPaymentDate: new Date().toISOString()
-                });
+                };
+                
+                if (payment.type === 'renewal') {
+                    updateData.renewalStatus = 'completed';
+                    updateData.lastRenewalDate = new Date().toISOString();
+                } else {
+                    updateData.plan = payment.plan || 'monthly';
+                    updateData.planDays = payment.planDays || 30;
+                }
+                
+                await db.collection('users').doc(userId).update(updateData);
                 
                 showNotification('Pagamento aprovado! Usuário ativado.', 'success');
                 
@@ -2491,7 +2516,7 @@ Equipe Venda+ 📱
                 let finalMessage = messageTemplate
                     .replace(/{nome}/g, payment.userName || 'Cliente')
                     .replace(/{loja}/g, payment.storeName || '')
-                    .replace(/{plano}/g, payment.plan === 'monthly' ? 'Mensal' : 'Personalizado')
+                    .replace(/{plano}/g, payment.type === 'renewal' ? 'Renovação Mensal' : (payment.plan === 'monthly' ? 'Mensal' : 'Personalizado'))
                     .replace(/{valor}/g, payment.amount?.toFixed(2).replace('.', ',') || '0,00')
                     .replace(/{data}/g, formattedDate)
                     .replace(/{validade}/g, expiryDate)
@@ -2760,6 +2785,7 @@ Equipe Venda+ 📱
                 case 'pending': return 'Pendente';
                 case 'approved': return 'Aprovado';
                 case 'rejected': return 'Rejeitado';
+                case 'pending_approval': return 'Aguardando Aprovação';
                 default: return 'Desconhecido';
             }
         }
@@ -2769,6 +2795,7 @@ Equipe Venda+ 📱
                 case 'pending': return 'status-pending';
                 case 'approved': return 'status-approved';
                 case 'rejected': return 'status-rejected';
+                case 'pending_approval': return 'status-pending';
                 default: return 'status-pending';
             }
         }
