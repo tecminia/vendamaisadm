@@ -19,800 +19,116 @@
     
     <style>
         :root {
-            --primary-color: #212121;
-            --secondary-color: #424242;
-            --success-color: #4CAF50;
-            --warning-color: #FF9800;
-            --danger-color: #F44336;
-            --info-color: #2196F3;
-            --light-bg: #f5f5f5;
-            --card-bg: #ffffff;
-            --border-color: #e0e0e0;
-            --text-primary: #212121;
-            --text-secondary: #757575;
-            --shadow: 0 2px 10px rgba(0,0,0,0.08);
+            --primary-color: #212121; --secondary-color: #424242; --success-color: #4CAF50; --warning-color: #FF9800; --danger-color: #F44336; --info-color: #2196F3; --light-bg: #f5f5f5; --card-bg: #ffffff; --border-color: #e0e0e0; --text-primary: #212121; --text-secondary: #757575; --shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        html, body {
-            height: 100%;
-            overflow: hidden;
-            background: var(--light-bg);
-            color: var(--text-primary);
-        }
-        
-        body {
-            font-size: 14px;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .admin-header,
-        .stats-grid,
-        .stat-card,
-        .tab-navigation,
-        .tab-btn,
-        .list-item,
-        .item-header,
-        .item-title,
-        .item-subtitle,
-        .status-badge,
-        .settings-section,
-        .section-title,
-        .form-input[readonly],
-        .form-input:not(input):not(textarea),
-        .modal-title,
-        .empty-state,
-        .empty-title,
-        .empty-text,
-        .loading-text,
-        .notification {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        input, textarea {
-            -webkit-user-select: text;
-            -moz-user-select: text;
-            -ms-user-select: text;
-            user-select: text;
-        }
-        
-        .status-bar {
-            height: env(safe-area-inset-top, 0px);
-            background: var(--primary-color);
-        }
-        
-        .admin-container {
-            flex: 1;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .admin-header {
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 16px;
-            box-shadow: var(--shadow);
-            z-index: 100;
-            flex-shrink: 0;
-        }
-        
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-        
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .header-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-        
-        .header-text h1 {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .header-text p {
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-        
-        .header-actions {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .icon-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .icon-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            padding: 12px 16px;
-            background: white;
-            flex-shrink: 0;
-        }
-        
-        .stat-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 12px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-        
-        .stat-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-        
-        .stat-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+        html, body { height: 100%; overflow: hidden; background: var(--light-bg); color: var(--text-primary); }
+        body { font-size: 14px; padding: 0; display: flex; flex-direction: column; }
+        .admin-header, .stats-grid, .stat-card, .tab-navigation, .tab-btn, .list-item, .item-header, .item-title, .item-subtitle, .status-badge, .settings-section, .section-title, .form-input[readonly], .form-input:not(input):not(textarea), .modal-title, .empty-state, .empty-title, .empty-text, .loading-text, .notification { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        input, textarea { -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text; }
+        .status-bar { height: env(safe-area-inset-top, 0px); background: var(--primary-color); }
+        .admin-container { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+        .admin-header { background: var(--primary-color); color: white; padding: 12px 16px; box-shadow: var(--shadow); z-index: 100; flex-shrink: 0; }
+        .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+        .header-title { display: flex; align-items: center; gap: 10px; }
+        .header-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(255, 255, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .header-text h1 { font-size: 1.2rem; font-weight: 600; }
+        .header-text p { font-size: 0.75rem; opacity: 0.8; }
+        .header-actions { display: flex; gap: 8px; }
+        .icon-btn { width: 36px; height: 36px; border-radius: 8px; background: rgba(255, 255, 255, 0.1); border: none; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
+        .icon-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 12px 16px; background: white; flex-shrink: 0; }
+        .stat-card { background: var(--card-bg); border-radius: 12px; padding: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        .stat-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .stat-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
         .stat-icon.total { background: rgba(33, 150, 243, 0.1); color: var(--info-color); }
         .stat-icon.active { background: rgba(76, 175, 80, 0.1); color: var(--success-color); }
         .stat-icon.pending { background: rgba(255, 152, 0, 0.1); color: var(--warning-color); }
         .stat-icon.blocked { background: rgba(244, 67, 54, 0.1); color: var(--danger-color); }
         .stat-icon.expired { background: rgba(96, 125, 139, 0.1); color: #607d8b; }
         .stat-icon.revenue { background: rgba(156, 39, 176, 0.1); color: #9c27b0; }
-        
-        .stat-number {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        .tab-navigation {
-            display: flex;
-            background: white;
-            border-bottom: 1px solid var(--border-color);
-            flex-shrink: 0;
-            padding: 0 16px;
-        }
-        
-        .tab-btn {
-            flex: 1;
-            padding: 14px 0;
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 0.9rem;
-            cursor: pointer;
-            position: relative;
-            transition: all 0.2s ease;
-        }
-        
-        .tab-btn.active {
-            color: var(--primary-color);
-        }
-        
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--primary-color);
-            border-radius: 3px 3px 0 0;
-        }
-        
-        .main-content {
-            flex: 1;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .tab-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding: 16px;
-            display: none;
-            background: var(--light-bg);
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        .search-bar {
-            margin-bottom: 16px;
-        }
-        
-        .search-container {
-            background: white;
-            border-radius: 10px;
-            padding: 0 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow);
-        }
-        
-        .search-container i {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .search-container input {
-            flex: 1;
-            padding: 12px 0;
-            border: none;
-            outline: none;
-            font-size: 0.9rem;
-            background: transparent;
-        }
-        
-        .list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .list-item {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        
-        .list-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-        }
-        
-        .item-title {
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-        
-        .item-subtitle {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 2px;
-        }
-        
-        .item-details {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        .detail-item {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        
-        .detail-label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        
-        .detail-value {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        
-        .status-badge {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            display: inline-block;
-            text-align: center;
-        }
-        
+        .stat-number { font-size: 1.3rem; font-weight: 700; color: var(--text-primary); }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
+        .tab-navigation { display: flex; background: white; border-bottom: 1px solid var(--border-color); flex-shrink: 0; padding: 0 16px; }
+        .tab-btn { flex: 1; padding: 14px 0; background: none; border: none; color: var(--text-secondary); font-weight: 500; font-size: 0.9rem; cursor: pointer; position: relative; transition: all 0.2s ease; }
+        .tab-btn.active { color: var(--primary-color); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--primary-color); border-radius: 3px 3px 0 0; }
+        .main-content { flex: 1; overflow: hidden; position: relative; }
+        .tab-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px; display: none; background: var(--light-bg); }
+        .tab-content.active { display: block; }
+        .search-bar { margin-bottom: 16px; }
+        .search-container { background: white; border-radius: 10px; padding: 0 12px; display: flex; align-items: center; gap: 8px; border: 1px solid var(--border-color); box-shadow: var(--shadow); }
+        .search-container i { color: var(--text-secondary); font-size: 0.9rem; }
+        .search-container input { flex: 1; padding: 12px 0; border: none; outline: none; font-size: 0.9rem; background: transparent; }
+        .list-container { display: flex; flex-direction: column; gap: 10px; }
+        .list-item { background: white; border-radius: 12px; padding: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); transition: all 0.2s ease; cursor: pointer; }
+        .list-item:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .item-title { font-weight: 600; font-size: 1rem; color: var(--text-primary); margin-bottom: 4px; }
+        .item-subtitle { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 2px; }
+        .item-details { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+        .detail-item { display: flex; flex-direction: column; gap: 4px; }
+        .detail-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 500; }
+        .detail-value { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: inline-block; text-align: center; }
         .status-active, .status-approved { background: rgba(76, 175, 80, 0.1); color: var(--success-color); }
         .status-pending { background: rgba(255, 152, 0, 0.1); color: var(--warning-color); }
         .status-blocked, .status-rejected { background: rgba(244, 67, 54, 0.1); color: var(--danger-color); }
         .status-expired { background: rgba(96, 125, 139, 0.1); color: #607d8b; }
         .status-renewal-pending { background: rgba(33, 150, 243, 0.1); color: var(--info-color); }
-        
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-        
-        .action-btn {
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        
+        .action-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .action-btn { padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: all 0.2s ease; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .btn-view { background: rgba(33, 150, 243, 0.1); color: var(--info-color); }
         .btn-activate, .btn-approve { background: rgba(76, 175, 80, 0.1); color: var(--success-color); }
         .btn-block, .btn-reject { background: rgba(244, 67, 54, 0.1); color: var(--danger-color); }
         .btn-delete { background: rgba(33, 33, 33, 0.1); color: var(--primary-color); }
         .btn-whatsapp { background: rgba(37, 211, 102, 0.1); color: #25D366; }
-        
-        .action-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-        
-        .settings-section {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
-        
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--primary-color);
-            color: var(--text-primary);
-        }
-        
-        .form-group {
-            margin-bottom: 16px;
-        }
-        
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: var(--text-primary);
-            font-size: 0.85rem;
-        }
-        
-        .form-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            background: white;
-            color: var(--text-primary);
-        }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(33, 33, 33, 0.1);
-        }
-        
-        .form-textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
-        }
-        
-        .form-hint {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            display: block;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .submit-btn:hover {
-            background: #000;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-secondary);
-        }
-        
-        .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 16px;
-            color: #e0e0e0;
-        }
-        
-        .empty-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-        
-        .empty-text {
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-        
-        .fab {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .fab:hover,
-        .fab:active,
-        .fab:focus {
-            transform: scale(1.05);
-            background: #000;
-            outline: none;
-        }
-        
-        .image-viewer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            touch-action: pan-x pan-y;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-        
-        .image-viewer-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .image-viewer-img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transform-origin: 0 0;
-            transition: transform 0.1s ease-out;
-            cursor: grab;
-            touch-action: pan-x pan-y;
-        }
-        
-        .image-viewer-img:active {
-            cursor: grabbing;
-        }
-        
-        .image-viewer-controls {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            z-index: 10001;
-        }
-        
-        .image-viewer-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.2s ease;
-        }
-        
-        .image-viewer-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-        
-        .image-viewer-zoom-info {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            color: white;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            backdrop-filter: blur(10px);
-        }
-        
-        .receipt-preview-container {
-            position: relative;
-            width: 100%;
-            height: 300px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #f8f9fa;
-            margin-bottom: 16px;
-            border: 2px solid var(--border-color);
-            touch-action: pan-x pan-y;
-        }
-        
-        .receipt-preview-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: slideUp 0.3s ease;
-        }
-        
-        .modal-header {
-            padding: 20px 20px 12px;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .modal-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 4px;
-            line-height: 1;
-        }
-        
-        .modal-body {
-            padding: 20px;
-        }
-        
-        .confirmation-text {
-            padding: 12px;
-            border: 2px solid var(--danger-color);
-            border-radius: 8px;
-            background: rgba(244, 67, 54, 0.05);
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 3000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        .loading-text {
-            color: white;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 16px 24px;
-            border-radius: 12px;
-            background: var(--primary-color);
-            color: white;
-            font-weight: 500;
-            text-align: center;
-            z-index: 4000;
-            animation: fadeIn 0.3s ease;
-            max-width: 280px;
-            width: 90%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        
+        .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .settings-section { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
+        .section-title { font-size: 1rem; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary-color); color: var(--text-primary); }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-primary); font-size: 0.85rem; }
+        .form-input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; transition: all 0.2s ease; background: white; color: var(--text-primary); }
+        .form-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(33, 33, 33, 0.1); }
+        .form-textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; resize: vertical; min-height: 100px; font-family: inherit; }
+        .form-hint { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; display: block; }
+        .submit-btn { width: 100%; padding: 14px; background: var(--primary-color); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .submit-btn:hover { background: #000; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-secondary); }
+        .empty-icon { font-size: 3rem; margin-bottom: 16px; color: #e0e0e0; }
+        .empty-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; color: var(--text-primary); }
+        .empty-text { font-size: 0.9rem; line-height: 1.4; }
+        .fab { position: fixed; bottom: 24px; right: 24px; width: 56px; height: 56px; border-radius: 50%; background: var(--primary-color); color: white; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: all 0.3s ease; outline: none; -webkit-tap-highlight-color: transparent; }
+        .fab:hover, .fab:active, .fab:focus { transform: scale(1.05); background: #000; outline: none; }
+        .image-viewer-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 10000; display: none; justify-content: center; align-items: center; touch-action: pan-x pan-y; -webkit-user-select: none; user-select: none; }
+        .image-viewer-container { position: relative; width: 100%; height: 100%; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+        .image-viewer-img { max-width: 100%; max-height: 100%; object-fit: contain; transform-origin: 0 0; transition: transform 0.1s ease-out; cursor: grab; touch-action: pan-x pan-y; }
+        .image-viewer-img:active { cursor: grabbing; }
+        .image-viewer-controls { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10001; }
+        .image-viewer-btn { width: 44px; height: 44px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); border: none; color: white; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(10px); transition: all 0.2s ease; }
+        .image-viewer-btn:hover { background: rgba(255, 255, 255, 0.3); transform: scale(1.1); }
+        .image-viewer-zoom-info { position: absolute; bottom: 20px; left: 20px; color: white; background: rgba(0, 0, 0, 0.5); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; backdrop-filter: blur(10px); }
+        .receipt-preview-container { position: relative; width: 100%; height: 300px; border-radius: 12px; overflow: hidden; background: #f8f9fa; margin-bottom: 16px; border: 2px solid var(--border-color); touch-action: pan-x pan-y; }
+        .receipt-preview-img { width: 100%; height: 100%; object-fit: contain; cursor: pointer; transition: transform 0.2s ease; }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 16px; animation: fadeIn 0.3s ease; }
+        .modal-content { background: white; border-radius: 16px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideUp 0.3s ease; }
+        .modal-header { padding: 20px 20px 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
+        .modal-title { font-size: 1.2rem; font-weight: 600; color: var(--text-primary); }
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: var(--text-secondary); cursor: pointer; padding: 4px; line-height: 1; }
+        .modal-body { padding: 20px; }
+        .confirmation-text { padding: 12px; border: 2px solid var(--danger-color); border-radius: 8px; background: rgba(244, 67, 54, 0.05); margin-bottom: 20px; font-size: 0.9rem; }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 3000; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+        .loading-spinner { width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; }
+        .loading-text { color: white; font-weight: 500; font-size: 0.9rem; }
+        .notification { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 16px 24px; border-radius: 12px; background: var(--primary-color); color: white; font-weight: 500; text-align: center; z-index: 4000; animation: fadeIn 0.3s ease; max-width: 280px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .notification.success { background: var(--success-color); }
         .notification.error { background: var(--danger-color); }
         .notification.info { background: var(--info-color); }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .mt-1 { margin-top: 8px; }
-        .mt-2 { margin-top: 16px; }
-        .mb-1 { margin-bottom: 8px; }
-        .mb-2 { margin-bottom: 16px; }
-        .text-center { text-align: center; }
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-2 { gap: 8px; }
-        
-        @media (max-width: 360px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .action-buttons {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .mt-1 { margin-top: 8px; } .mt-2 { margin-top: 16px; } .mb-1 { margin-bottom: 8px; } .mb-2 { margin-bottom: 16px; } .text-center { text-align: center; } .flex { display: flex; } .items-center { align-items: center; } .justify-between { justify-content: space-between; } .gap-2 { gap: 8px; }
+        @media (max-width: 360px) { .stats-grid { grid-template-columns: 1fr; } .action-buttons { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -822,18 +138,10 @@
         <div class="image-viewer-container">
             <img class="image-viewer-img" id="imageViewerImg" alt="Comprovante">
             <div class="image-viewer-controls">
-                <button class="image-viewer-btn" id="imageViewerZoomIn">
-                    <i class="fas fa-search-plus"></i>
-                </button>
-                <button class="image-viewer-btn" id="imageViewerZoomOut">
-                    <i class="fas fa-search-minus"></i>
-                </button>
-                <button class="image-viewer-btn" id="imageViewerReset">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
-                <button class="image-viewer-btn" id="imageViewerClose">
-                    <i class="fas fa-times"></i>
-                </button>
+                <button class="image-viewer-btn" id="imageViewerZoomIn"><i class="fas fa-search-plus"></i></button>
+                <button class="image-viewer-btn" id="imageViewerZoomOut"><i class="fas fa-search-minus"></i></button>
+                <button class="image-viewer-btn" id="imageViewerReset"><i class="fas fa-sync-alt"></i></button>
+                <button class="image-viewer-btn" id="imageViewerClose"><i class="fas fa-times"></i></button>
             </div>
             <div class="image-viewer-zoom-info" id="imageViewerZoomInfo">100%</div>
         </div>
@@ -843,18 +151,14 @@
         <header class="admin-header">
             <div class="header-top">
                 <div class="header-title">
-                    <div class="header-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
+                    <div class="header-icon"><i class="fas fa-user-shield"></i></div>
                     <div class="header-text">
                         <h1>Admin Venda+</h1>
                         <p>Painel de Controle</p>
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="icon-btn" id="refreshBtn" title="Atualizar">
-                        <i class="fas fa-sync-alt"></i>
-                    </button>
+                    <button class="icon-btn" id="refreshBtn" title="Atualizar"><i class="fas fa-sync-alt"></i></button>
                 </div>
             </div>
         </header>
@@ -862,15 +166,9 @@
         <div class="stats-grid" id="statsGrid"></div>
         
         <div class="tab-navigation">
-            <button class="tab-btn active" data-tab="users">
-                <i class="fas fa-users"></i> Usuários
-            </button>
-            <button class="tab-btn" data-tab="payments">
-                <i class="fas fa-money-bill"></i> Pagamentos
-            </button>
-            <button class="tab-btn" data-tab="settings">
-                <i class="fas fa-cog"></i> Configurações
-            </button>
+            <button class="tab-btn active" data-tab="users"><i class="fas fa-users"></i> Usuários</button>
+            <button class="tab-btn" data-tab="payments"><i class="fas fa-money-bill"></i> Pagamentos</button>
+            <button class="tab-btn" data-tab="settings"><i class="fas fa-cog"></i> Configurações</button>
         </div>
         
         <div class="main-content">
@@ -881,13 +179,9 @@
                         <input type="text" id="searchUsers" placeholder="Buscar usuários...">
                     </div>
                 </div>
-                
                 <div class="list-container" id="usersList"></div>
-                
                 <div class="empty-state" id="usersEmpty" style="display: none;">
-                    <div class="empty-icon">
-                        <i class="fas fa-users-slash"></i>
-                    </div>
+                    <div class="empty-icon"><i class="fas fa-users-slash"></i></div>
                     <div class="empty-title">Nenhum usuário encontrado</div>
                     <div class="empty-text">Os usuários cadastrados aparecerão aqui</div>
                 </div>
@@ -900,13 +194,9 @@
                         <input type="text" id="searchPayments" placeholder="Buscar pagamentos...">
                     </div>
                 </div>
-                
                 <div class="list-container" id="paymentsList"></div>
-                
                 <div class="empty-state" id="paymentsEmpty" style="display: none;">
-                    <div class="empty-icon">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                    </div>
+                    <div class="empty-icon"><i class="fas fa-file-invoice-dollar"></i></div>
                     <div class="empty-title">Nenhum pagamento encontrado</div>
                     <div class="empty-text">Os pagamentos aparecerão aqui</div>
                 </div>
@@ -915,35 +205,29 @@
             <div id="settingsTab" class="tab-content">
                 <div class="settings-section">
                     <h2 class="section-title">Configurações de Pagamento</h2>
-                    
                     <form id="paymentSettingsForm">
                         <div class="form-group">
                             <label class="form-label">Chave PIX Padrão</label>
                             <input type="text" id="pixKey" class="form-input" placeholder="Chave PIX para recebimentos" required>
                             <span class="form-hint">Esta chave PIX será exibida para todos os usuários</span>
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">WhatsApp para Notificações</label>
                             <input type="text" id="adminWhatsApp" class="form-input" placeholder="(11) 99999-9999" required>
                             <span class="form-hint">Número que receberá notificações de novos pagamentos</span>
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Valor do Plano Mensal (R$)</label>
                             <input type="number" id="monthlyPlanPrice" class="form-input" step="0.01" min="0" value="99.00" required>
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Dias para Notificação de Vencimento</label>
                             <input type="number" id="expirationWarningDays" class="form-input" min="1" max="30" value="7" required>
                             <span class="form-hint">Dias antes do vencimento para notificar o usuário</span>
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Mensagem de Notificação WhatsApp</label>
-                            <textarea id="whatsappMessage" class="form-textarea" rows="5">
-📱 *NOVO PAGAMENTO PENDENTE* 📱
+                            <textarea id="whatsappMessage" class="form-textarea" rows="5">📱 *NOVO PAGAMENTO PENDENTE* 📱
 
 👤 *Cliente:* {nome}
 🏪 *Loja:* {loja}
@@ -957,11 +241,9 @@
 
 Por favor, acesse o painel administrativo para verificar o comprovante e liberar o acesso.</textarea>
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Mensagem de Pagamento Aprovado (para cliente)</label>
-                            <textarea id="paymentApprovedMessage" class="form-textarea" rows="5">
-✅ *PAGAMENTO APROVADO!* ✅
+                            <textarea id="paymentApprovedMessage" class="form-textarea" rows="5">✅ *PAGAMENTO APROVADO!* ✅
 
 Olá {nome}! 👋
 
@@ -981,11 +263,9 @@ Em caso de dúvidas, estamos à disposição!
 Atenciosamente,
 Equipe Venda+ 📱</textarea>
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label">Mensagem de Pagamento Rejeitado (para cliente)</label>
-                            <textarea id="paymentRejectedMessage" class="form-textarea" rows="5">
-❌ *PAGAMENTO REJEITADO* ❌
+                            <textarea id="paymentRejectedMessage" class="form-textarea" rows="5">❌ *PAGAMENTO REJEITADO* ❌
 
 Olá {nome},
 
@@ -1008,33 +288,24 @@ Para mais informações, entre em contato conosco.
 Atenciosamente,
 Equipe Venda+ 📱</textarea>
                         </div>
-                        
-                        <button type="submit" class="submit-btn">
-                            <i class="fas fa-save"></i> Salvar Configurações
-                        </button>
+                        <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Salvar Configurações</button>
                     </form>
                 </div>
                 
                 <div class="settings-section">
                     <h2 class="section-title">Sistema</h2>
-                    
                     <div class="form-group">
                         <label class="form-label">Admin Logado</label>
                         <div class="form-input" style="background: #f8f9fa;">
                             <div id="adminInfo"></div>
                         </div>
                     </div>
-                    
-                    <button class="submit-btn" id="clearCacheBtn">
-                        <i class="fas fa-trash"></i> Limpar Cache
-                    </button>
+                    <button class="submit-btn" id="clearCacheBtn"><i class="fas fa-trash"></i> Limpar Cache</button>
                 </div>
             </div>
         </div>
         
-        <button class="fab" id="newUserBtn" title="Novo Usuário">
-            <i class="fas fa-user-plus"></i>
-        </button>
+        <button class="fab" id="newUserBtn" title="Novo Usuário"><i class="fas fa-user-plus"></i></button>
     </div>
     
     <div class="modal" id="userDetailsModal">
@@ -1073,23 +344,19 @@ Equipe Venda+ 📱</textarea>
                         <label class="form-label">Nome da Loja *</label>
                         <input type="text" id="newStoreName" class="form-input" required>
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label">E-mail *</label>
                         <input type="email" id="newUserEmail" class="form-input" required>
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label">Senha *</label>
                         <input type="password" id="newUserPassword" class="form-input" required minlength="6">
                         <span class="form-hint">Mínimo 6 caracteres</span>
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label">Telefone (WhatsApp) *</label>
                         <input type="text" id="newUserPhone" class="form-input" placeholder="(11) 99999-9999" required>
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label">Plano</label>
                         <select id="newUserPlan" class="form-input">
@@ -1097,13 +364,11 @@ Equipe Venda+ 📱</textarea>
                             <option value="custom">Personalizado</option>
                         </select>
                     </div>
-                    
                     <div class="form-group" id="customDaysGroup" style="display: none;">
                         <label class="form-label">Dias de Plano Personalizado *</label>
                         <input type="number" id="customPlanDays" class="form-input" min="1" max="365" value="30" placeholder="Digite o número de dias">
                         <span class="form-hint">Digite a quantidade de dias que o plano terá (1-365)</span>
                     </div>
-                    
                     <div class="form-group">
                         <label class="form-label">Status</label>
                         <select id="newUserStatus" class="form-input">
@@ -1112,14 +377,9 @@ Equipe Venda+ 📱</textarea>
                             <option value="blocked">Bloqueado</option>
                         </select>
                     </div>
-                    
                     <div class="flex gap-2 mt-2">
-                        <button type="button" class="submit-btn" style="background: #757575;" id="cancelNewUserBtn">
-                            Cancelar
-                        </button>
-                        <button type="submit" class="submit-btn">
-                            <i class="fas fa-user-plus"></i> Criar Usuário
-                        </button>
+                        <button type="button" class="submit-btn" style="background: #757575;" id="cancelNewUserBtn">Cancelar</button>
+                        <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i> Criar Usuário</button>
                     </div>
                 </form>
             </div>
@@ -1139,12 +399,8 @@ Equipe Venda+ 📱</textarea>
                     <input type="text" id="confirmationInput" class="form-input mt-1" placeholder="Digite CONFIRMAR">
                 </div>
                 <div class="flex gap-2 mt-2">
-                    <button type="button" class="submit-btn" style="background: #757575;" id="cancelDeleteBtn">
-                        Cancelar
-                    </button>
-                    <button type="button" class="submit-btn" style="background: var(--danger-color);" id="confirmDeleteBtn" disabled>
-                        <i class="fas fa-trash"></i> Excluir
-                    </button>
+                    <button type="button" class="submit-btn" style="background: #757575;" id="cancelDeleteBtn">Cancelar</button>
+                    <button type="button" class="submit-btn" style="background: var(--danger-color);" id="confirmDeleteBtn" disabled><i class="fas fa-trash"></i> Excluir</button>
                 </div>
             </div>
         </div>
@@ -1156,7 +412,6 @@ Equipe Venda+ 📱</textarea>
     </div>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB7U-JfKAlkPxSyL4AEf5u0BgcDzSXf41M",
             authDomain: "appvendas-1eebf.firebaseapp.com",
@@ -1375,9 +630,7 @@ Equipe Venda+ 📱</textarea>
                 if (sessionAge > maxAge) {
                     localStorage.removeItem('adminSession');
                     showNotification('Sessão expirada. Faça login novamente.', 'error');
-                    setTimeout(() => {
-                        redirectToLogin();
-                    }, 2000);
+                    setTimeout(() => { redirectToLogin(); }, 2000);
                     return;
                 }
                 
@@ -1407,9 +660,7 @@ Equipe Venda+ 📱</textarea>
 
         function redirectToLogin() {
             showNotification('Acesso não autorizado. Redirecionando para login...', 'error');
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 1500);
+            setTimeout(() => { window.location.href = 'login.html'; }, 1500);
         }
 
         function updateAdminInfo() {
@@ -1473,15 +724,10 @@ Equipe Venda+ 📱</textarea>
                 users = [];
                 snapshot.forEach(doc => {
                     const userData = doc.data();
-                    users.push({
-                        id: doc.id,
-                        ...userData
-                    });
+                    users.push({ id: doc.id, ...userData });
                 });
                 
-                users.sort((a, b) => {
-                    return new Date(b.createdAt || b.timestamp) - new Date(a.createdAt || a.timestamp);
-                });
+                users.sort((a, b) => new Date(b.createdAt || b.timestamp) - new Date(a.createdAt || a.timestamp));
                 
                 updateUsersList();
                 updateStats();
@@ -1500,10 +746,7 @@ Equipe Venda+ 📱</textarea>
                 payments = [];
                 snapshot.forEach(doc => {
                     const paymentData = doc.data();
-                    payments.push({
-                        id: doc.id,
-                        ...paymentData
-                    });
+                    payments.push({ id: doc.id, ...paymentData });
                 });
                 
                 updatePaymentsList();
@@ -1520,7 +763,6 @@ Equipe Venda+ 📱</textarea>
             const blockedUsers = users.filter(user => user.status === 'blocked').length;
             const expiredUsers = users.filter(user => user.status === 'expired').length;
             const renewalPendingUsers = users.filter(user => user.renewalStatus === 'pending').length;
-            const monthlyRevenue = activeUsers * (systemConfig.monthlyPlanPrice || 99);
             
             const stats = [
                 { icon: 'users', label: 'Total', value: totalUsers, color: 'total' },
@@ -1537,9 +779,7 @@ Equipe Venda+ 📱</textarea>
                 statCard.className = 'stat-card';
                 statCard.innerHTML = `
                     <div class="stat-row">
-                        <div class="stat-icon ${stat.color}">
-                            <i class="fas fa-${stat.icon}"></i>
-                        </div>
+                        <div class="stat-icon ${stat.color}"><i class="fas fa-${stat.icon}"></i></div>
                         <div class="stat-number">${stat.value}</div>
                     </div>
                     <div class="stat-label">${stat.label}</div>
@@ -1557,27 +797,17 @@ Equipe Venda+ 📱</textarea>
             }
             
             usersEmpty.style.display = 'none';
-            
             const searchTerm = searchUsers.value.toLowerCase();
             
             users.forEach(user => {
-                if (searchTerm && 
-                    !user.storeName?.toLowerCase().includes(searchTerm) &&
-                    !user.email?.toLowerCase().includes(searchTerm)) {
-                    return;
-                }
+                if (searchTerm && !user.storeName?.toLowerCase().includes(searchTerm) && !user.email?.toLowerCase().includes(searchTerm)) return;
                 
                 let status = user.status || 'pending';
                 const renewalStatus = user.renewalStatus || 'none';
-                
-                // Se o usuário tem renovação pendente, mostramos esse status
-                if (renewalStatus === 'pending' || renewalStatus === 'pending_approval') {
-                    status = 'renewal_pending';
-                }
+                if (renewalStatus === 'pending' || renewalStatus === 'pending_approval') status = 'renewal_pending';
                 
                 const expiryDate = user.expiryDate || 'Não definida';
                 const phone = user.phone || 'Não informado';
-                
                 const statusText = getStatusText(status, renewalStatus);
                 const statusClass = getStatusClass(status, renewalStatus);
                 
@@ -1591,14 +821,11 @@ Equipe Venda+ 📱</textarea>
                             <div class="item-subtitle">${user.email}</div>
                             <div class="item-subtitle">${phone}</div>
                             ${renewalStatus === 'pending' || renewalStatus === 'pending_approval' ? 
-                                `<div class="item-subtitle" style="color: var(--info-color); font-weight: 500;">
-                                    <i class="fas fa-sync-alt"></i> Renovação pendente
-                                </div>` : ''
+                                `<div class="item-subtitle" style="color: var(--info-color); font-weight: 500;"><i class="fas fa-sync-alt"></i> Renovação pendente</div>` : ''
                             }
                         </div>
                         <span class="status-badge ${statusClass}">${statusText}</span>
                     </div>
-                    
                     <div class="item-details">
                         <div class="detail-item">
                             <span class="detail-label">Status</span>
@@ -1617,54 +844,31 @@ Equipe Venda+ 📱</textarea>
                             <span class="detail-value">${formatDate(user.createdAt)}</span>
                         </div>
                     </div>
-                    
                     <div class="action-buttons">
-                        <button class="action-btn btn-view" data-id="${user.id}" data-action="view">
-                            <i class="fas fa-eye"></i> Ver
-                        </button>
+                        <button class="action-btn btn-view" data-id="${user.id}" data-action="view"><i class="fas fa-eye"></i> Ver</button>
                         ${status === 'active' || status === 'renewal_pending' ? `
-                            <button class="action-btn btn-block" data-id="${user.id}" data-action="block">
-                                <i class="fas fa-ban"></i> Bloquear
-                            </button>
+                            <button class="action-btn btn-block" data-id="${user.id}" data-action="block"><i class="fas fa-ban"></i> Bloquear</button>
                         ` : `
-                            <button class="action-btn btn-activate" data-id="${user.id}" data-action="activate">
-                                <i class="fas fa-check"></i> Ativar
-                            </button>
+                            <button class="action-btn btn-activate" data-id="${user.id}" data-action="activate"><i class="fas fa-check"></i> Ativar</button>
                         `}
                     </div>
                 `;
                 
                 usersList.appendChild(userItem);
-                
                 userItem.addEventListener('click', (e) => {
                     if (e.target.closest('.action-btn')) return;
-                    const userId = e.currentTarget.getAttribute('data-user-id');
-                    viewUserDetails(userId);
+                    viewUserDetails(user.id);
                 });
             });
             
             usersList.querySelectorAll('[data-action="view"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const userId = e.currentTarget.getAttribute('data-id');
-                    viewUserDetails(userId);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); viewUserDetails(e.target.getAttribute('data-id')); });
             });
-            
             usersList.querySelectorAll('[data-action="block"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const userId = e.currentTarget.getAttribute('data-id');
-                    toggleUserStatus(userId, 'blocked');
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); toggleUserStatus(e.target.getAttribute('data-id'), 'blocked'); });
             });
-            
             usersList.querySelectorAll('[data-action="activate"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const userId = e.currentTarget.getAttribute('data-id');
-                    toggleUserStatus(userId, 'active');
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); toggleUserStatus(e.target.getAttribute('data-id'), 'active'); });
             });
         }
 
@@ -1677,16 +881,10 @@ Equipe Venda+ 📱</textarea>
             }
             
             paymentsEmpty.style.display = 'none';
-            
             const searchTerm = searchPayments.value.toLowerCase();
             
             payments.forEach(payment => {
-                if (searchTerm && 
-                    !payment.userName?.toLowerCase().includes(searchTerm) &&
-                    !payment.storeName?.toLowerCase().includes(searchTerm) &&
-                    !payment.userEmail?.toLowerCase().includes(searchTerm)) {
-                    return;
-                }
+                if (searchTerm && !payment.userName?.toLowerCase().includes(searchTerm) && !payment.storeName?.toLowerCase().includes(searchTerm) && !payment.userEmail?.toLowerCase().includes(searchTerm)) return;
                 
                 const status = payment.status || 'pending';
                 const statusText = getPaymentStatusText(status);
@@ -1705,95 +903,45 @@ Equipe Venda+ 📱</textarea>
                         </div>
                         <span class="status-badge ${statusClass}">${statusText}</span>
                     </div>
-                    
                     <div class="item-details">
-                        <div class="detail-item">
-                            <span class="detail-label">Tipo</span>
-                            <span class="detail-value">${paymentType}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Valor</span>
-                            <span class="detail-value">R$ ${payment.amount?.toFixed(2).replace('.', ',') || '0,00'}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Data</span>
-                            <span class="detail-value">${formatDate(payment.createdAt)}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Telefone</span>
-                            <span class="detail-value">${payment.userPhone || 'Não informado'}</span>
-                        </div>
+                        <div class="detail-item"><span class="detail-label">Tipo</span><span class="detail-value">${paymentType}</span></div>
+                        <div class="detail-item"><span class="detail-label">Valor</span><span class="detail-value">R$ ${payment.amount?.toFixed(2).replace('.', ',') || '0,00'}</span></div>
+                        <div class="detail-item"><span class="detail-label">Data</span><span class="detail-value">${formatDate(payment.createdAt)}</span></div>
+                        <div class="detail-item"><span class="detail-label">Telefone</span><span class="detail-value">${payment.userPhone || 'Não informado'}</span></div>
                     </div>
-                    
                     <div class="action-buttons">
-                        <button class="action-btn btn-view" data-id="${payment.id}" data-action="view">
-                            <i class="fas fa-eye"></i> Ver
-                        </button>
+                        <button class="action-btn btn-view" data-id="${payment.id}" data-action="view"><i class="fas fa-eye"></i> Ver</button>
                         ${status === 'pending' || status === 'pending_approval' ? `
-                            <button class="action-btn btn-approve" data-id="${payment.id}" data-action="approve">
-                                <i class="fas fa-check"></i> Aprovar
-                            </button>
-                            <button class="action-btn btn-reject" data-id="${payment.id}" data-action="reject">
-                                <i class="fas fa-times"></i> Rejeitar
-                            </button>
+                            <button class="action-btn btn-approve" data-id="${payment.id}" data-action="approve"><i class="fas fa-check"></i> Aprovar</button>
+                            <button class="action-btn btn-reject" data-id="${payment.id}" data-action="reject"><i class="fas fa-times"></i> Rejeitar</button>
                         ` : `
-                            <button class="action-btn btn-whatsapp" data-id="${payment.id}" data-action="whatsapp">
-                                <i class="fas fa-whatsapp"></i> WhatsApp
-                            </button>
-                            <button class="action-btn btn-delete" data-id="${payment.id}" data-action="delete">
-                                <i class="fas fa-trash"></i> Excluir
-                            </button>
+                            <button class="action-btn btn-whatsapp" data-id="${payment.id}" data-action="whatsapp"><i class="fas fa-whatsapp"></i> WhatsApp</button>
+                            <button class="action-btn btn-delete" data-id="${payment.id}" data-action="delete"><i class="fas fa-trash"></i> Excluir</button>
                         `}
                     </div>
                 `;
                 
                 paymentsList.appendChild(paymentItem);
-                
                 paymentItem.addEventListener('click', (e) => {
                     if (e.target.closest('.action-btn')) return;
-                    const paymentId = e.currentTarget.getAttribute('data-payment-id');
-                    viewPaymentDetails(paymentId);
+                    viewPaymentDetails(payment.id);
                 });
             });
             
             paymentsList.querySelectorAll('[data-action="view"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const paymentId = e.currentTarget.getAttribute('data-id');
-                    viewPaymentDetails(paymentId);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); viewPaymentDetails(e.target.getAttribute('data-id')); });
             });
-            
             paymentsList.querySelectorAll('[data-action="approve"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const paymentId = e.currentTarget.getAttribute('data-id');
-                    approvePayment(paymentId);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); approvePayment(e.target.getAttribute('data-id')); });
             });
-            
             paymentsList.querySelectorAll('[data-action="reject"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const paymentId = e.currentTarget.getAttribute('data-id');
-                    rejectPayment(paymentId);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); rejectPayment(e.target.getAttribute('data-id')); });
             });
-            
             paymentsList.querySelectorAll('[data-action="delete"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const paymentId = e.currentTarget.getAttribute('data-id');
-                    showDeleteConfirmation(paymentId);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); showDeleteConfirmation(e.target.getAttribute('data-id')); });
             });
-            
             paymentsList.querySelectorAll('[data-action="whatsapp"]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const paymentId = e.currentTarget.getAttribute('data-id');
-                    sendWhatsAppMessage(paymentId);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); sendWhatsAppMessage(e.target.getAttribute('data-id')); });
             });
         }
 
@@ -1803,39 +951,27 @@ Equipe Venda+ 📱</textarea>
                 await loadAllPayments();
                 showNotification('Dados atualizados!', 'success');
             });
-            
             newUserBtn.addEventListener('click', () => {
                 newUserModal.style.display = 'flex';
-                setTimeout(() => {
-                    document.getElementById('newStoreName')?.focus();
-                }, 300);
+                setTimeout(() => { document.getElementById('newStoreName')?.focus(); }, 300);
             });
-            
             tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tabId = btn.getAttribute('data-tab');
-                    switchTab(tabId);
-                });
+                btn.addEventListener('click', () => { switchTab(btn.getAttribute('data-tab')); });
             });
-            
             searchUsers.addEventListener('input', updateUsersList);
             searchPayments.addEventListener('input', updatePaymentsList);
             paymentSettingsForm.addEventListener('submit', saveSystemConfig);
             clearCacheBtn.addEventListener('click', clearCache);
-            
             closeUserModal.addEventListener('click', () => userDetailsModal.style.display = 'none');
             closePaymentModal.addEventListener('click', () => paymentDetailsModal.style.display = 'none');
             closeNewUserModal.addEventListener('click', closeNewUser);
             cancelNewUserBtn.addEventListener('click', closeNewUser);
             closeDeleteModal.addEventListener('click', closeDeleteModalHandler);
             cancelDeleteBtn.addEventListener('click', closeDeleteModalHandler);
-            
             newUserForm.addEventListener('submit', createNewUser);
-            
             newUserPlanSelect.addEventListener('change', function() {
                 customDaysGroup.style.display = this.value === 'custom' ? 'block' : 'none';
             });
-            
             window.addEventListener('click', (e) => {
                 if (e.target === userDetailsModal) userDetailsModal.style.display = 'none';
                 if (e.target === paymentDetailsModal) paymentDetailsModal.style.display = 'none';
@@ -1843,19 +979,11 @@ Equipe Venda+ 📱</textarea>
                 if (e.target === deleteConfirmationModal) closeDeleteModalHandler();
                 if (e.target === imageViewer) imageViewer.style.display = 'none';
             });
-            
             confirmationInput.addEventListener('input', function() {
                 confirmDeleteBtn.disabled = this.value !== 'CONFIRMAR';
             });
-            
             confirmDeleteBtn.addEventListener('click', deletePayment);
-            
-            if (adminWhatsAppInput) {
-                new IMask(adminWhatsAppInput, {
-                    mask: '(00) 00000-0000',
-                    lazy: false
-                });
-            }
+            if (adminWhatsAppInput) new IMask(adminWhatsAppInput, { mask: '(00) 00000-0000', lazy: false });
         }
 
         function closeNewUser() {
@@ -1876,13 +1004,8 @@ Equipe Venda+ 📱</textarea>
         }
 
         function switchTab(tabId) {
-            tabBtns.forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
-            });
-            
-            tabContents.forEach(content => {
-                content.classList.toggle('active', content.id === `${tabId}Tab`);
-            });
+            tabBtns.forEach(btn => btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId));
+            tabContents.forEach(content => content.classList.toggle('active', content.id === `${tabId}Tab`));
         }
 
         async function viewUserDetails(userId) {
@@ -1891,33 +1014,22 @@ Equipe Venda+ 📱</textarea>
             
             let status = user.status || 'pending';
             const renewalStatus = user.renewalStatus || 'none';
-            
-            if (renewalStatus === 'pending' || renewalStatus === 'pending_approval') {
-                status = 'renewal_pending';
-            }
+            if (renewalStatus === 'pending' || renewalStatus === 'pending_approval') status = 'renewal_pending';
             
             const expiryDate = user.expiryDate || 'Não definida';
             const createdAt = user.createdAt ? formatDateTime(user.createdAt) : 'Não informada';
             const lastLogin = user.lastLogin ? formatDateTime(user.lastLogin) : 'Nunca logou';
             const phone = user.phone || 'Não informado';
-            
             const statusText = getStatusText(status, renewalStatus);
             const statusClass = getStatusClass(status, renewalStatus);
             
             let renewalInfo = '';
             if (renewalStatus === 'pending' || renewalStatus === 'pending_approval') {
-                const pendingPayment = payments.find(p => 
-                    p.userId === userId && 
-                    (p.status === 'pending' || p.status === 'pending_approval') &&
-                    p.type === 'renewal'
-                );
-                
+                const pendingPayment = payments.find(p => p.userId === userId && (p.status === 'pending' || p.status === 'pending_approval') && p.type === 'renewal');
                 if (pendingPayment) {
                     renewalInfo = `
                         <div class="form-group">
-                            <label class="form-label" style="color: var(--info-color);">
-                                <i class="fas fa-sync-alt"></i> Renovação Pendente
-                            </label>
+                            <label class="form-label" style="color: var(--info-color);"><i class="fas fa-sync-alt"></i> Renovação Pendente</label>
                             <div class="form-input" style="background: #e8f4fd; border-left: 4px solid var(--info-color);">
                                 <div><strong>Valor:</strong> R$ ${pendingPayment.amount?.toFixed(2).replace('.', ',') || '0,00'}</div>
                                 <div><strong>Data do pedido:</strong> ${formatDateTime(pendingPayment.createdAt)}</div>
@@ -1932,88 +1044,35 @@ Equipe Venda+ 📱</textarea>
             const content = `
                 <div class="settings-section" style="border: none; padding: 0; box-shadow: none;">
                     ${renewalInfo}
-                    
-                    <div class="form-group">
-                        <label class="form-label">Nome da Loja</label>
-                        <div class="form-input" style="background: #f8f9fa;">${user.storeName || 'Sem nome'}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">E-mail</label>
-                        <div class="form-input" style="background: #f8f9fa;">${user.email}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Telefone</label>
-                        <div class="form-input" style="background: #f8f9fa;">${phone}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Status</label>
-                        <div class="form-input" style="background: #f8f9fa;">
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Data de Cadastro</label>
-                        <div class="form-input" style="background: #f8f9fa;">${createdAt}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Último Login</label>
-                        <div class="form-input" style="background: #f8f9fa;">${lastLogin}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Expira em</label>
-                        <div class="form-input" style="background: #f8f9fa;">${expiryDate}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Status de Renovação</label>
-                        <div class="form-input" style="background: #f8f9fa;">
-                            ${renewalStatus === 'none' ? 'Nenhuma renovação pendente' : 
-                              renewalStatus === 'pending' ? 'Renovação solicitada' :
-                              renewalStatus === 'pending_approval' ? 'Aguardando aprovação' :
-                              renewalStatus === 'approved' ? 'Renovação aprovada' :
-                              renewalStatus === 'rejected' ? 'Renovação rejeitada' : renewalStatus}
-                        </div>
-                    </div>
-                    
+                    <div class="form-group"><label class="form-label">Nome da Loja</label><div class="form-input" style="background: #f8f9fa;">${user.storeName || 'Sem nome'}</div></div>
+                    <div class="form-group"><label class="form-label">E-mail</label><div class="form-input" style="background: #f8f9fa;">${user.email}</div></div>
+                    <div class="form-group"><label class="form-label">Telefone</label><div class="form-input" style="background: #f8f9fa;">${phone}</div></div>
+                    <div class="form-group"><label class="form-label">Status</label><div class="form-input" style="background: #f8f9fa;"><span class="status-badge ${statusClass}">${statusText}</span></div></div>
+                    <div class="form-group"><label class="form-label">Data de Cadastro</label><div class="form-input" style="background: #f8f9fa;">${createdAt}</div></div>
+                    <div class="form-group"><label class="form-label">Último Login</label><div class="form-input" style="background: #f8f9fa;">${lastLogin}</div></div>
+                    <div class="form-group"><label class="form-label">Expira em</label><div class="form-input" style="background: #f8f9fa;">${expiryDate}</div></div>
+                    <div class="form-group"><label class="form-label">Status de Renovação</label><div class="form-input" style="background: #f8f9fa;">
+                        ${renewalStatus === 'none' ? 'Nenhuma renovação pendente' : 
+                          renewalStatus === 'pending' ? 'Renovação solicitada' :
+                          renewalStatus === 'pending_approval' ? 'Aguardando aprovação' :
+                          renewalStatus === 'approved' ? 'Renovação aprovada' :
+                          renewalStatus === 'rejected' ? 'Renovação rejeitada' : renewalStatus}
+                    </div></div>
                     <div class="flex gap-2 mt-2">
-                        <button type="button" class="submit-btn" style="background: #757575;" id="closeDetailsBtn">
-                            Fechar
-                        </button>
+                        <button type="button" class="submit-btn" style="background: #757575;" id="closeDetailsBtn">Fechar</button>
                         ${status === 'active' || status === 'renewal_pending' ? `
-                            <button type="button" class="submit-btn" style="background: var(--danger-color);" id="blockUserBtn">
-                                <i class="fas fa-ban"></i> Bloquear
-                            </button>
+                            <button type="button" class="submit-btn" style="background: var(--danger-color);" id="blockUserBtn"><i class="fas fa-ban"></i> Bloquear</button>
                         ` : `
-                            <button type="button" class="submit-btn" style="background: var(--success-color);" id="activateUserBtn">
-                                <i class="fas fa-check"></i> Ativar
-                            </button>
+                            <button type="button" class="submit-btn" style="background: var(--success-color);" id="activateUserBtn"><i class="fas fa-check"></i> Ativar</button>
                         `}
                     </div>
                 </div>
             `;
             
             document.getElementById('userDetailsContent').innerHTML = content;
-            
-            document.getElementById('closeDetailsBtn')?.addEventListener('click', () => {
-                userDetailsModal.style.display = 'none';
-            });
-            
-            document.getElementById('blockUserBtn')?.addEventListener('click', () => {
-                userDetailsModal.style.display = 'none';
-                toggleUserStatus(userId, 'blocked');
-            });
-            
-            document.getElementById('activateUserBtn')?.addEventListener('click', () => {
-                userDetailsModal.style.display = 'none';
-                toggleUserStatus(userId, 'active');
-            });
-            
+            document.getElementById('closeDetailsBtn')?.addEventListener('click', () => userDetailsModal.style.display = 'none');
+            document.getElementById('blockUserBtn')?.addEventListener('click', () => { userDetailsModal.style.display = 'none'; toggleUserStatus(userId, 'blocked'); });
+            document.getElementById('activateUserBtn')?.addEventListener('click', () => { userDetailsModal.style.display = 'none'; toggleUserStatus(userId, 'active'); });
             userDetailsModal.style.display = 'flex';
         }
 
@@ -2023,30 +1082,18 @@ Equipe Venda+ 📱</textarea>
                 if (!user) return;
                 
                 const statusText = getStatusText(newStatus);
-                
-                let updateData = { 
-                    status: newStatus,
-                    updatedAt: new Date().toISOString()
-                };
+                let updateData = { status: newStatus, updatedAt: new Date().toISOString() };
                 
                 if (newStatus === 'active') {
                     const expiryDate = new Date();
                     expiryDate.setDate(expiryDate.getDate() + 30);
                     updateData.expiryDate = expiryDate.toISOString().split('T')[0];
                     updateData.isActive = true;
-                    
                 } else if (newStatus === 'blocked') {
                     updateData.isActive = false;
-                    // Se estiver bloqueado, cancelar qualquer renovação pendente
                     updateData.renewalStatus = 'none';
                     
-                    // Atualizar pagamentos pendentes de renovação
-                    const pendingRenewals = payments.filter(p => 
-                        p.userId === userId && 
-                        p.type === 'renewal' && 
-                        (p.status === 'pending' || p.status === 'pending_approval')
-                    );
-                    
+                    const pendingRenewals = payments.filter(p => p.userId === userId && p.type === 'renewal' && (p.status === 'pending' || p.status === 'pending_approval'));
                     for (const payment of pendingRenewals) {
                         await db.collection('payments').doc(payment.id).update({
                             status: 'rejected',
@@ -2058,17 +1105,13 @@ Equipe Venda+ 📱</textarea>
                 }
                 
                 await db.collection('users').doc(userId).update(updateData);
-                
                 const userIndex = users.findIndex(u => u.id === userId);
-                if (userIndex !== -1) {
-                    users[userIndex] = { ...users[userIndex], ...updateData };
-                }
+                if (userIndex !== -1) users[userIndex] = { ...users[userIndex], ...updateData };
                 
                 await loadAllPayments();
                 updateUsersList();
                 updateStats();
                 showNotification(`Usuário ${statusText.toLowerCase()}!`, 'success');
-                
             } catch (error) {
                 console.error('Error updating user status:', error);
                 showNotification('Erro ao atualizar status.', 'error');
@@ -2086,38 +1129,12 @@ Equipe Venda+ 📱</textarea>
             let receiptContent = '';
             if (payment.receiptBase64) {
                 if (payment.receiptType === 'pdf') {
-                    receiptContent = `
-                        <div class="form-group">
-                            <label class="form-label">Comprovante</label>
-                            <button class="submit-btn" onclick="downloadReceipt('${payment.id}')" style="background: var(--danger-color);">
-                                <i class="fas fa-file-pdf"></i> Baixar Comprovante PDF
-                            </button>
-                        </div>
-                    `;
+                    receiptContent = `<div class="form-group"><label class="form-label">Comprovante</label><button class="submit-btn" onclick="downloadReceipt('${payment.id}')" style="background: var(--danger-color);"><i class="fas fa-file-pdf"></i> Baixar Comprovante PDF</button></div>`;
                 } else {
-                    receiptContent = `
-                        <div class="form-group">
-                            <label class="form-label">Comprovante <span style="color: var(--info-color); font-size: 0.8rem;">(clique para ampliar)</span></label>
-                            <div class="receipt-preview-container">
-                                <img src="${payment.receiptBase64}" 
-                                     alt="Comprovante" 
-                                     class="receipt-preview-img"
-                                     onclick="openImageViewer('${payment.receiptBase64}')"
-                                     style="cursor: pointer;">
-                            </div>
-                        </div>
-                    `;
+                    receiptContent = `<div class="form-group"><label class="form-label">Comprovante <span style="color: var(--info-color); font-size: 0.8rem;">(clique para ampliar)</span></label><div class="receipt-preview-container"><img src="${payment.receiptBase64}" alt="Comprovante" class="receipt-preview-img" onclick="openImageViewer('${payment.receiptBase64}')" style="cursor: pointer;"></div></div>`;
                 }
             } else {
-                receiptContent = `
-                    <div class="form-group">
-                        <label class="form-label">Comprovante</label>
-                        <div class="form-input" style="background: #f8f9fa; text-align: center; color: var(--text-secondary);">
-                            <i class="fas fa-file-image" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
-                            Sem comprovante anexado
-                        </div>
-                    </div>
-                `;
+                receiptContent = `<div class="form-group"><label class="form-label">Comprovante</label><div class="form-input" style="background: #f8f9fa; text-align: center; color: var(--text-secondary);"><i class="fas fa-file-image" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>Sem comprovante anexado</div></div>`;
             }
             
             let renewalInfo = '';
@@ -2137,128 +1154,38 @@ Equipe Venda+ 📱</textarea>
             
             const content = `
                 <div class="settings-section" style="border: none; padding: 0; box-shadow: none;">
-                    <div class="form-group">
-                        <label class="form-label">Tipo de Pagamento</label>
-                        <div class="form-input" style="background: #f8f9fa; font-weight: 600;">
-                            ${paymentType}
-                        </div>
-                    </div>
-                    
+                    <div class="form-group"><label class="form-label">Tipo de Pagamento</label><div class="form-input" style="background: #f8f9fa; font-weight: 600;">${paymentType}</div></div>
                     ${renewalInfo}
-                    
-                    <div class="form-group">
-                        <label class="form-label">Cliente</label>
-                        <div class="form-input" style="background: #f8f9fa;">${payment.userName || 'Nome não informado'}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Loja</label>
-                        <div class="form-input" style="background: #f8f9fa;">${payment.storeName || 'Sem nome'}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">E-mail</label>
-                        <div class="form-input" style="background: #f8f9fa;">${payment.userEmail}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Telefone</label>
-                        <div class="form-input" style="background: #f8f9fa;">${payment.userPhone || 'Não informado'}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Status</label>
-                        <div class="form-input" style="background: #f8f9fa;">
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Plano</label>
-                        <div class="form-input" style="background: #f8f9fa;">${payment.plan === 'monthly' ? 'Mensal' : 'Personalizado'}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Valor</label>
-                        <div class="form-input" style="background: #f8f9fa;">R$ ${payment.amount?.toFixed(2).replace('.', ',') || '0,00'}</div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">Data</label>
-                        <div class="form-input" style="background: #f8f9fa;">${formatDateTime(payment.createdAt)}</div>
-                    </div>
-                    
-                    ${payment.approvedAt ? `
-                        <div class="form-group">
-                            <label class="form-label">Aprovado em</label>
-                            <div class="form-input" style="background: #f8f9fa;">${formatDateTime(payment.approvedAt)}</div>
-                        </div>
-                    ` : ''}
-                    
-                    ${payment.rejectedAt ? `
-                        <div class="form-group">
-                            <label class="form-label">Rejeitado em</label>
-                            <div class="form-input" style="background: #f8f9fa;">${formatDateTime(payment.rejectedAt)}</div>
-                        </div>
-                        ${payment.rejectionReason ? `
-                        <div class="form-group">
-                            <label class="form-label">Motivo da rejeição</label>
-                            <div class="form-input" style="background: #f8f9fa;">${payment.rejectionReason}</div>
-                        </div>
-                        ` : ''}
-                    ` : ''}
-                    
+                    <div class="form-group"><label class="form-label">Cliente</label><div class="form-input" style="background: #f8f9fa;">${payment.userName || 'Nome não informado'}</div></div>
+                    <div class="form-group"><label class="form-label">Loja</label><div class="form-input" style="background: #f8f9fa;">${payment.storeName || 'Sem nome'}</div></div>
+                    <div class="form-group"><label class="form-label">E-mail</label><div class="form-input" style="background: #f8f9fa;">${payment.userEmail}</div></div>
+                    <div class="form-group"><label class="form-label">Telefone</label><div class="form-input" style="background: #f8f9fa;">${payment.userPhone || 'Não informado'}</div></div>
+                    <div class="form-group"><label class="form-label">Status</label><div class="form-input" style="background: #f8f9fa;"><span class="status-badge ${statusClass}">${statusText}</span></div></div>
+                    <div class="form-group"><label class="form-label">Plano</label><div class="form-input" style="background: #f8f9fa;">${payment.plan === 'monthly' ? 'Mensal' : 'Personalizado'}</div></div>
+                    <div class="form-group"><label class="form-label">Valor</label><div class="form-input" style="background: #f8f9fa;">R$ ${payment.amount?.toFixed(2).replace('.', ',') || '0,00'}</div></div>
+                    <div class="form-group"><label class="form-label">Data</label><div class="form-input" style="background: #f8f9fa;">${formatDateTime(payment.createdAt)}</div></div>
+                    ${payment.approvedAt ? `<div class="form-group"><label class="form-label">Aprovado em</label><div class="form-input" style="background: #f8f9fa;">${formatDateTime(payment.approvedAt)}</div></div>` : ''}
+                    ${payment.rejectedAt ? `<div class="form-group"><label class="form-label">Rejeitado em</label><div class="form-input" style="background: #f8f9fa;">${formatDateTime(payment.rejectedAt)}</div></div>${payment.rejectionReason ? `<div class="form-group"><label class="form-label">Motivo da rejeição</label><div class="form-input" style="background: #f8f9fa;">${payment.rejectionReason}</div></div>` : ''}` : ''}
                     ${receiptContent}
-                    
                     <div class="flex gap-2 mt-2">
-                        <button type="button" class="submit-btn" style="background: #757575;" id="closePaymentBtn">
-                            Fechar
-                        </button>
+                        <button type="button" class="submit-btn" style="background: #757575;" id="closePaymentBtn">Fechar</button>
                         ${payment.status === 'pending' || payment.status === 'pending_approval' ? `
-                            <button type="button" class="submit-btn" style="background: var(--success-color);" id="approvePaymentBtn">
-                                <i class="fas fa-check"></i> Aprovar
-                            </button>
-                            <button type="button" class="submit-btn" style="background: var(--danger-color);" id="rejectPaymentBtn">
-                                <i class="fas fa-times"></i> Rejeitar
-                            </button>
+                            <button type="button" class="submit-btn" style="background: var(--success-color);" id="approvePaymentBtn"><i class="fas fa-check"></i> Aprovar</button>
+                            <button type="button" class="submit-btn" style="background: var(--danger-color);" id="rejectPaymentBtn"><i class="fas fa-times"></i> Rejeitar</button>
                         ` : `
-                            <button type="button" class="submit-btn" style="background: #25D366;" id="sendWhatsAppBtn">
-                                <i class="fas fa-whatsapp"></i> Enviar WhatsApp
-                            </button>
-                            <button type="button" class="submit-btn" style="background: var(--danger-color);" id="deletePaymentBtn">
-                                <i class="fas fa-trash"></i> Excluir
-                            </button>
+                            <button type="button" class="submit-btn" style="background: #25D366;" id="sendWhatsAppBtn"><i class="fas fa-whatsapp"></i> Enviar WhatsApp</button>
+                            <button type="button" class="submit-btn" style="background: var(--danger-color);" id="deletePaymentBtn"><i class="fas fa-trash"></i> Excluir</button>
                         `}
                     </div>
                 </div>
             `;
             
             document.getElementById('paymentDetailsContent').innerHTML = content;
-            
-            document.getElementById('closePaymentBtn')?.addEventListener('click', () => {
-                paymentDetailsModal.style.display = 'none';
-            });
-            
-            document.getElementById('approvePaymentBtn')?.addEventListener('click', async () => {
-                paymentDetailsModal.style.display = 'none';
-                await approvePayment(paymentId);
-            });
-            
-            document.getElementById('rejectPaymentBtn')?.addEventListener('click', async () => {
-                paymentDetailsModal.style.display = 'none';
-                await rejectPayment(paymentId);
-            });
-            
-            document.getElementById('sendWhatsAppBtn')?.addEventListener('click', async () => {
-                paymentDetailsModal.style.display = 'none';
-                await sendWhatsAppMessage(paymentId);
-            });
-            
-            document.getElementById('deletePaymentBtn')?.addEventListener('click', async () => {
-                paymentDetailsModal.style.display = 'none';
-                showDeleteConfirmation(paymentId);
-            });
-            
+            document.getElementById('closePaymentBtn')?.addEventListener('click', () => paymentDetailsModal.style.display = 'none');
+            document.getElementById('approvePaymentBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await approvePayment(paymentId); });
+            document.getElementById('rejectPaymentBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await rejectPayment(paymentId); });
+            document.getElementById('sendWhatsAppBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await sendWhatsAppMessage(paymentId); });
+            document.getElementById('deletePaymentBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; showDeleteConfirmation(paymentId); });
             window.downloadReceipt = function(id) {
                 const p = payments.find(p => p.id === id);
                 if (p && p.receiptBase64) {
@@ -2268,7 +1195,6 @@ Equipe Venda+ 📱</textarea>
                     link.click();
                 }
             };
-            
             paymentDetailsModal.style.display = 'flex';
         }
 
@@ -2279,33 +1205,20 @@ Equipe Venda+ 📱</textarea>
                 
                 const userId = payment.userId;
                 const user = users.find(u => u.id === userId);
-                
-                // Calcular nova data de vencimento
                 let newExpiryDate = new Date();
                 let planDays = 30;
                 
-                if (payment.plan === 'custom' && payment.planDays) {
-                    planDays = parseInt(payment.planDays) || 30;
-                }
-                
-                // Se for uma renovação e o usuário já tem uma data de vencimento,
-                // adicionamos os dias APÓS a data atual de vencimento
+                if (payment.plan === 'custom' && payment.planDays) planDays = parseInt(payment.planDays) || 30;
                 if (payment.type === 'renewal' && user && user.expiryDate) {
                     const currentExpiry = new Date(user.expiryDate);
-                    // Só renova se a data atual for depois ou próxima do vencimento
                     const today = new Date();
                     today.setHours(0, 0, 0, 0);
-                    
-                    if (currentExpiry > today) {
-                        // Ainda não venceu, renova a partir da data de vencimento
-                        newExpiryDate = new Date(currentExpiry);
-                    }
+                    if (currentExpiry > today) newExpiryDate = new Date(currentExpiry);
                 }
                 
                 newExpiryDate.setDate(newExpiryDate.getDate() + planDays);
                 const expiryDateStr = newExpiryDate.toISOString().split('T')[0];
                 
-                // Atualizar pagamento
                 await db.collection('payments').doc(paymentId).update({
                     status: 'approved',
                     approvedAt: new Date().toISOString(),
@@ -2313,7 +1226,6 @@ Equipe Venda+ 📱</textarea>
                     newExpiryDate: expiryDateStr
                 });
                 
-                // Atualizar usuário
                 const updateData = {
                     status: 'active',
                     isActive: true,
@@ -2324,22 +1236,16 @@ Equipe Venda+ 📱</textarea>
                     lastPaymentDate: new Date().toISOString()
                 };
                 
-                // Se for um novo cadastro, definir o plano
                 if (payment.type !== 'renewal') {
                     updateData.plan = payment.plan || 'monthly';
                     updateData.planDays = payment.planDays || 30;
                 }
                 
                 await db.collection('users').doc(userId).update(updateData);
-                
-                // Enviar WhatsApp de confirmação
                 await sendApprovalWhatsApp(payment, expiryDateStr);
-                
                 showNotification('Pagamento aprovado! Usuário ativado.', 'success');
-                
                 await loadAllUsers();
                 await loadAllPayments();
-                
             } catch (error) {
                 console.error('Error approving payment:', error);
                 showNotification('Erro ao aprovar pagamento.', 'error');
@@ -2349,22 +1255,13 @@ Equipe Venda+ 📱</textarea>
         async function sendApprovalWhatsApp(payment, expiryDateStr) {
             try {
                 const userPhone = payment.userPhone;
-                if (!userPhone) {
-                    console.log('Telefone do cliente não informado para WhatsApp');
-                    return;
-                }
+                if (!userPhone) { console.log('Telefone do cliente não informado para WhatsApp'); return; }
                 
                 const cleanPhone = userPhone.replace(/\D/g, '');
-                if (cleanPhone.length < 10) {
-                    console.log('Número de telefone inválido para WhatsApp');
-                    return;
-                }
+                if (cleanPhone.length < 10) { console.log('Número de telefone inválido para WhatsApp'); return; }
                 
                 const messageTemplate = systemConfig.paymentApprovedMessage || '';
-                if (!messageTemplate) {
-                    console.log('Mensagem de aprovação não configurada');
-                    return;
-                }
+                if (!messageTemplate) { console.log('Mensagem de aprovação não configurada'); return; }
                 
                 const formattedDate = new Date().toLocaleDateString('pt-BR');
                 const formattedExpiryDate = new Date(expiryDateStr).toLocaleDateString('pt-BR');
@@ -2390,20 +1287,14 @@ Equipe Venda+ 📱</textarea>
                 document.body.appendChild(link);
                 link.click();
                 
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                }, 100);
+                setTimeout(() => { document.body.removeChild(link); }, 100);
                 
-                // Marcar como enviado no banco de dados
                 await db.collection('payments').doc(payment.id).update({
                     whatsappSent: true,
                     whatsappSentAt: new Date().toISOString(),
                     whatsappSentBy: adminUser.email
                 });
-                
-            } catch (error) {
-                console.error('Error sending approval WhatsApp:', error);
-            }
+            } catch (error) { console.error('Error sending approval WhatsApp:', error); }
         }
 
         async function rejectPayment(paymentId) {
@@ -2412,10 +1303,7 @@ Equipe Venda+ 📱</textarea>
                 if (!payment) return;
                 
                 const rejectionReason = prompt('Digite o motivo da rejeição:');
-                if (!rejectionReason) {
-                    showNotification('Operação cancelada. Motivo não informado.', 'warning');
-                    return;
-                }
+                if (!rejectionReason) { showNotification('Operação cancelada. Motivo não informado.', 'warning'); return; }
                 
                 await db.collection('payments').doc(paymentId).update({
                     status: 'rejected',
@@ -2424,7 +1312,6 @@ Equipe Venda+ 📱</textarea>
                     rejectionReason: rejectionReason
                 });
                 
-                // Se for uma renovação, atualizar status do usuário
                 if (payment.type === 'renewal') {
                     await db.collection('users').doc(payment.userId).update({
                         renewalStatus: 'rejected',
@@ -2435,7 +1322,6 @@ Equipe Venda+ 📱</textarea>
                 showNotification('Pagamento rejeitado!', 'warning');
                 await loadAllPayments();
                 await loadAllUsers();
-                
             } catch (error) {
                 console.error('Error rejecting payment:', error);
                 showNotification('Erro ao rejeitar pagamento.', 'error');
@@ -2448,16 +1334,10 @@ Equipe Venda+ 📱</textarea>
                 if (!payment) return;
                 
                 const userPhone = payment.userPhone;
-                if (!userPhone) {
-                    showNotification('Telefone do cliente não informado.', 'error');
-                    return;
-                }
+                if (!userPhone) { showNotification('Telefone do cliente não informado.', 'error'); return; }
                 
                 const cleanPhone = userPhone.replace(/\D/g, '');
-                if (cleanPhone.length < 10) {
-                    showNotification('Número de telefone inválido.', 'error');
-                    return;
-                }
+                if (cleanPhone.length < 10) { showNotification('Número de telefone inválido.', 'error'); return; }
                 
                 let messageTemplate = '';
                 let messageType = '';
@@ -2473,15 +1353,11 @@ Equipe Venda+ 📱</textarea>
                     return;
                 }
                 
-                if (!messageTemplate) {
-                    showNotification(`Mensagem de ${messageType} não configurada.`, 'error');
-                    return;
-                }
+                if (!messageTemplate) { showNotification(`Mensagem de ${messageType} não configurada.`, 'error'); return; }
                 
                 const user = users.find(u => u.id === payment.userId);
                 const paymentDate = new Date(payment.createdAt);
                 const formattedDate = paymentDate.toLocaleDateString('pt-BR');
-                
                 let expiryDate = '';
                 if (payment.status === 'approved' && user) {
                     expiryDate = user.expiryDate || '';
@@ -2512,18 +1388,14 @@ Equipe Venda+ 📱</textarea>
                 document.body.appendChild(link);
                 link.click();
                 
-                setTimeout(() => {
-                    document.body.removeChild(link);
-                }, 100);
+                setTimeout(() => { document.body.removeChild(link); }, 100);
                 
                 showNotification(`WhatsApp enviado! Status: ${messageType}`, 'success');
-                
                 await db.collection('payments').doc(paymentId).update({
                     whatsappSent: true,
                     whatsappSentAt: new Date().toISOString(),
                     whatsappSentBy: adminUser.email
                 });
-                
             } catch (error) {
                 console.error('Error sending WhatsApp:', error);
                 showNotification('Erro ao enviar WhatsApp.', 'error');
@@ -2533,9 +1405,7 @@ Equipe Venda+ 📱</textarea>
         function showDeleteConfirmation(paymentId) {
             currentPaymentToDelete = paymentId;
             deleteConfirmationModal.style.display = 'flex';
-            setTimeout(() => {
-                confirmationInput.focus();
-            }, 300);
+            setTimeout(() => { confirmationInput.focus(); }, 300);
         }
 
         async function deletePayment() {
@@ -2543,18 +1413,12 @@ Equipe Venda+ 📱</textarea>
             
             try {
                 await db.collection('payments').doc(currentPaymentToDelete).delete();
-                
                 const paymentIndex = payments.findIndex(p => p.id === currentPaymentToDelete);
-                if (paymentIndex !== -1) {
-                    payments.splice(paymentIndex, 1);
-                }
-                
+                if (paymentIndex !== -1) payments.splice(paymentIndex, 1);
                 deleteConfirmationModal.style.display = 'none';
                 resetDeleteConfirmation();
-                
                 updatePaymentsList();
                 showNotification('Pagamento excluído com sucesso!', 'success');
-                
             } catch (error) {
                 console.error('Error deleting payment:', error);
                 showNotification('Erro ao excluir pagamento.', 'error');
@@ -2584,7 +1448,6 @@ Equipe Venda+ 📱</textarea>
             
             try {
                 showLoading();
-                
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
                 
@@ -2616,19 +1479,12 @@ Equipe Venda+ 📱</textarea>
                 await loadAllUsers();
                 showNotification('Usuário criado com sucesso!', 'success');
                 hideLoading();
-                
             } catch (error) {
                 console.error('Error creating user:', error);
                 let errorMessage = 'Erro ao criar usuário.';
-                
-                if (error.code === 'auth/email-already-in-use') {
-                    errorMessage = 'Este e-mail já está em uso.';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMessage = 'E-mail inválido.';
-                } else if (error.code === 'auth/weak-password') {
-                    errorMessage = 'Senha muito fraca. Use pelo menos 6 caracteres.';
-                }
-                
+                if (error.code === 'auth/email-already-in-use') errorMessage = 'Este e-mail já está em uso.';
+                else if (error.code === 'auth/invalid-email') errorMessage = 'E-mail inválido.';
+                else if (error.code === 'auth/weak-password') errorMessage = 'Senha muito fraca. Use pelo menos 6 caracteres.';
                 showNotification(errorMessage, 'error');
                 hideLoading();
             }
@@ -2662,16 +1518,12 @@ Equipe Venda+ 📱</textarea>
         function clearCache() {
             localStorage.removeItem('adminSession');
             showNotification('Cache limpo! A página será recarregada.', 'info');
-            setTimeout(() => {
-                location.reload();
-            }, 1500);
+            setTimeout(() => { location.reload(); }, 1500);
         }
 
         function showNotification(message, type = 'info', duration = 3000) {
             const existingNotifications = document.querySelectorAll('.notification');
-            existingNotifications.forEach(notification => {
-                notification.remove();
-            });
+            existingNotifications.forEach(notification => notification.remove());
             
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
@@ -2681,47 +1533,24 @@ Equipe Venda+ 📱</textarea>
             setTimeout(() => {
                 notification.style.opacity = '0';
                 notification.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        document.body.removeChild(notification);
-                    }
-                }, 300);
+                setTimeout(() => { if (notification.parentNode) document.body.removeChild(notification); }, 300);
             }, duration);
         }
 
-        function showLoading() {
-            loadingOverlay.style.display = 'flex';
-        }
-
-        function hideLoading() {
-            loadingOverlay.style.display = 'none';
-        }
-
+        function showLoading() { loadingOverlay.style.display = 'flex'; }
+        function hideLoading() { loadingOverlay.style.display = 'none'; }
         function formatDate(dateString) {
             if (!dateString) return 'Data não informada';
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('pt-BR');
-            } catch (error) {
-                return 'Data inválida';
-            }
+            try { return new Date(dateString).toLocaleDateString('pt-BR'); } 
+            catch (error) { return 'Data inválida'; }
         }
-        
         function formatDateTime(dateString) {
             if (!dateString) return 'Data/hora não informada';
-            try {
-                const date = new Date(dateString);
-                return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-            } catch (error) {
-                return 'Data inválida';
-            }
+            try { return new Date(dateString).toLocaleDateString('pt-BR') + ' ' + new Date(dateString).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); } 
+            catch (error) { return 'Data inválida'; }
         }
-        
         function getStatusText(status, renewalStatus = 'none') {
-            if (status === 'renewal_pending') {
-                return renewalStatus === 'pending_approval' ? 'Aguardando Aprovação' : 'Renovação Pendente';
-            }
-            
+            if (status === 'renewal_pending') return renewalStatus === 'pending_approval' ? 'Aguardando Aprovação' : 'Renovação Pendente';
             switch(status) {
                 case 'active': return 'Ativo';
                 case 'pending': return 'Pendente';
@@ -2730,12 +1559,8 @@ Equipe Venda+ 📱</textarea>
                 default: return 'Desconhecido';
             }
         }
-        
         function getStatusClass(status, renewalStatus = 'none') {
-            if (status === 'renewal_pending') {
-                return 'status-renewal-pending';
-            }
-            
+            if (status === 'renewal_pending') return 'status-renewal-pending';
             switch(status) {
                 case 'active': return 'status-active';
                 case 'pending': return 'status-pending';
@@ -2744,7 +1569,6 @@ Equipe Venda+ 📱</textarea>
                 default: return 'status-pending';
             }
         }
-        
         function getPaymentStatusText(status) {
             switch(status) {
                 case 'pending': return 'Pendente';
@@ -2754,12 +1578,9 @@ Equipe Venda+ 📱</textarea>
                 default: return 'Desconhecido';
             }
         }
-        
         function getPaymentStatusClass(status) {
             switch(status) {
-                case 'pending': 
-                case 'pending_approval': 
-                    return 'status-pending';
+                case 'pending': case 'pending_approval': return 'status-pending';
                 case 'approved': return 'status-approved';
                 case 'rejected': return 'status-rejected';
                 default: return 'status-pending';
