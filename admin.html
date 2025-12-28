@@ -83,6 +83,8 @@
         .btn-block, .btn-reject { background: rgba(244, 67, 54, 0.1); color: var(--danger-color); }
         .btn-delete { background: rgba(33, 33, 33, 0.1); color: var(--primary-color); }
         .btn-whatsapp { background: rgba(37, 211, 102, 0.1); color: #25D366; }
+        .btn-finish { background: rgba(76, 175, 80, 0.1); color: var(--success-color); }
+        .btn-send-msg { background: rgba(156, 39, 176, 0.1); color: #9c27b0; }
         .action-btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .settings-section { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: var(--shadow); border: 1px solid var(--border-color); }
         .section-title { font-size: 1rem; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--primary-color); color: var(--text-primary); }
@@ -1170,7 +1172,10 @@ Equipe Venda+ 📱</textarea>
                     <div class="flex gap-2 mt-2">
                         <button type="button" class="submit-btn" style="background: #757575;" id="closePaymentBtn">Fechar</button>
                         ${payment.status === 'pending' || payment.status === 'pending_approval' ? `
-                            <button type="button" class="submit-btn" style="background: var(--success-color);" id="approvePaymentBtn"><i class="fas fa-check"></i> Aprovar</button>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%;">
+                                <button type="button" class="submit-btn" style="background: var(--success-color);" id="finishPaymentBtn"><i class="fas fa-check"></i> Concluir</button>
+                                <button type="button" class="submit-btn" style="background: var(--info-color);" id="sendApprovalMessageBtn"><i class="fas fa-paper-plane"></i> Enviar Mensagem</button>
+                            </div>
                             <button type="button" class="submit-btn" style="background: var(--danger-color);" id="rejectPaymentBtn"><i class="fas fa-times"></i> Rejeitar</button>
                         ` : `
                             <button type="button" class="submit-btn" style="background: #25D366;" id="sendWhatsAppBtn"><i class="fas fa-whatsapp"></i> Enviar WhatsApp</button>
@@ -1182,7 +1187,8 @@ Equipe Venda+ 📱</textarea>
             
             document.getElementById('paymentDetailsContent').innerHTML = content;
             document.getElementById('closePaymentBtn')?.addEventListener('click', () => paymentDetailsModal.style.display = 'none');
-            document.getElementById('approvePaymentBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await approvePayment(paymentId); });
+            document.getElementById('finishPaymentBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await finishPayment(paymentId); });
+            document.getElementById('sendApprovalMessageBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await sendApprovalMessage(paymentId); });
             document.getElementById('rejectPaymentBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await rejectPayment(paymentId); });
             document.getElementById('sendWhatsAppBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; await sendWhatsAppMessage(paymentId); });
             document.getElementById('deletePaymentBtn')?.addEventListener('click', async () => { paymentDetailsModal.style.display = 'none'; showDeleteConfirmation(paymentId); });
@@ -1198,7 +1204,7 @@ Equipe Venda+ 📱</textarea>
             paymentDetailsModal.style.display = 'flex';
         }
 
-        async function approvePayment(paymentId) {
+        async function finishPayment(paymentId) {
             try {
                 const payment = payments.find(p => p.id === paymentId);
                 if (!payment) return;
@@ -1242,26 +1248,54 @@ Equipe Venda+ 📱</textarea>
                 }
                 
                 await db.collection('users').doc(userId).update(updateData);
-                await sendApprovalWhatsApp(payment, expiryDateStr);
-                showNotification('Pagamento aprovado! Usuário ativado.', 'success');
+                showNotification('Pagamento concluído! Usuário ativado.', 'success');
                 await loadAllUsers();
                 await loadAllPayments();
             } catch (error) {
-                console.error('Error approving payment:', error);
-                showNotification('Erro ao aprovar pagamento.', 'error');
+                console.error('Error finishing payment:', error);
+                showNotification('Erro ao concluir pagamento.', 'error');
             }
         }
 
-        async function sendApprovalWhatsApp(payment, expiryDateStr) {
+        async function sendApprovalMessage(paymentId) {
             try {
+                const payment = payments.find(p => p.id === paymentId);
+                if (!payment) return;
+                
                 const userPhone = payment.userPhone;
-                if (!userPhone) { console.log('Telefone do cliente não informado para WhatsApp'); return; }
+                if (!userPhone) { 
+                    showNotification('Telefone do cliente não informado para WhatsApp.', 'warning');
+                    return; 
+                }
                 
                 const cleanPhone = userPhone.replace(/\D/g, '');
-                if (cleanPhone.length < 10) { console.log('Número de telefone inválido para WhatsApp'); return; }
+                if (cleanPhone.length < 10) { 
+                    showNotification('Número de telefone inválido para WhatsApp.', 'warning');
+                    return; 
+                }
                 
                 const messageTemplate = systemConfig.paymentApprovedMessage || '';
-                if (!messageTemplate) { console.log('Mensagem de aprovação não configurada'); return; }
+                if (!messageTemplate) { 
+                    showNotification('Mensagem de aprovação não configurada.', 'warning');
+                    return; 
+                }
+                
+                const user = users.find(u => u.id === payment.userId);
+                let expiryDateStr = '';
+                if (user && user.expiryDate) {
+                    expiryDateStr = user.expiryDate;
+                } else {
+                    let newExpiryDate = new Date();
+                    if (payment.type === 'renewal' && user && user.expiryDate) {
+                        const currentExpiry = new Date(user.expiryDate);
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        if (currentExpiry > today) newExpiryDate = new Date(currentExpiry);
+                    }
+                    const planDays = (payment.plan === 'custom' && payment.planDays) ? parseInt(payment.planDays) : 30;
+                    newExpiryDate.setDate(newExpiryDate.getDate() + planDays);
+                    expiryDateStr = newExpiryDate.toISOString().split('T')[0];
+                }
                 
                 const formattedDate = new Date().toLocaleDateString('pt-BR');
                 const formattedExpiryDate = new Date(expiryDateStr).toLocaleDateString('pt-BR');
@@ -1289,12 +1323,11 @@ Equipe Venda+ 📱</textarea>
                 
                 setTimeout(() => { document.body.removeChild(link); }, 100);
                 
-                await db.collection('payments').doc(payment.id).update({
-                    whatsappSent: true,
-                    whatsappSentAt: new Date().toISOString(),
-                    whatsappSentBy: adminUser.email
-                });
-            } catch (error) { console.error('Error sending approval WhatsApp:', error); }
+                showNotification('Mensagem enviada via WhatsApp!', 'success');
+            } catch (error) { 
+                console.error('Error sending approval message:', error);
+                showNotification('Erro ao enviar mensagem.', 'error');
+            }
         }
 
         async function rejectPayment(paymentId) {
