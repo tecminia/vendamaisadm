@@ -29,8 +29,8 @@
 
         const maxAge = 8 * 60 * 60 * 1000;
         if (Date.now() - timestamp <= maxAge) {
-            // Redireciona DIRETAMENTE para admin.html se já logado
-            location.replace('admin.html');
+            // Redireciona DIRETAMENTE para paineladm.html se já logado
+            location.replace('paineladm.html');
         } else {
             localStorage.removeItem('adminSession');
             location.replace('login.html');
