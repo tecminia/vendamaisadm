@@ -11,334 +11,41 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <style>
-        :root {
-            --primary-color: #000000;
-            --secondary-color: #ffffff;
-            --text-color: #000000;
-            --text-secondary: #666666;
-            --background-light: #f5f5f5;
-            --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.2);
-            --border-radius: 20px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        html, body {
-            height: 100%;
-            overflow: hidden;
-            background: var(--secondary-color);
-            color: var(--text-color);
-        }
-        
-        body {
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e5e5e5 100%);
-        }
-        
-        .admin-login-container {
-            max-width: 400px;
-            width: 100%;
-            background-color: var(--secondary-color);
-            border-radius: var(--border-radius);
-            padding: 50px 30px;
-            box-shadow: var(--shadow-light);
-            border: 2px solid var(--primary-color);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .admin-login-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary-color);
-        }
-        
-        .logo-section {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        .logo-icon {
-            font-size: 3.5rem;
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .logo-section h1 {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-        
-        .logo-section p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-        
-        .admin-info {
-            background-color: var(--background-light);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 30px 0;
-            text-align: center;
-            border: 2px solid var(--primary-color);
-            position: relative;
-        }
-        
-        .admin-info::before {
-            content: '';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--secondary-color);
-            padding: 0 10px;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        .admin-info h3 {
-            color: var(--primary-color);
-            margin-bottom: 10px;
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-        
-        .admin-info p {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            line-height: 1.5;
-        }
-        
-        .btn {
-            padding: 18px 20px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1rem;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            letter-spacing: 0.3px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.1);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn:active::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .btn-google {
-            background-color: var(--secondary-color);
-            color: var(--text-color);
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-google:hover {
-            background-color: var(--primary-color);
-            color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-        
-        .btn-google:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .btn-google:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        
-        .notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 18px 25px;
-            border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            z-index: 10000;
-            animation: fadeIn 0.3s ease;
-            font-weight: 500;
-            color: white;
-            text-align: center;
-            max-width: 300px;
-            width: 90%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            border: 2px solid var(--primary-color);
-            backdrop-filter: blur(10px);
-        }
-        
-        .notification.success {
-            background-color: rgba(0, 0, 0, 0.95);
-            color: #ffffff;
-            border-color: #000000;
-        }
-        
-        .notification.error {
-            background-color: rgba(0, 0, 0, 0.95);
-            color: #ffffff;
-            border-color: #000000;
-        }
-        
-        .notification.info {
-            background-color: rgba(0, 0, 0, 0.95);
-            color: #ffffff;
-            border-color: #000000;
-        }
-        
-        .notification.warning {
-            background-color: rgba(0, 0, 0, 0.95);
-            color: #ffffff;
-            border-color: #000000;
-        }
-        
-        @keyframes fadeIn {
-            from { 
-                opacity: 0; 
-                transform: translate(-50%, -50%) scale(0.9); 
-            }
-            to { 
-                opacity: 1; 
-                transform: translate(-50%, -50%) scale(1); 
-            }
-        }
-        
-        @keyframes fadeOut {
-            from { 
-                opacity: 1; 
-                transform: translate(-50%, -50%) scale(1); 
-            }
-            to { 
-                opacity: 0; 
-                transform: translate(-50%, -50%) scale(0.9); 
-            }
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(0, 0, 0, 0.2);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .version {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            opacity: 0.7;
-        }
-        
-        @media (max-width: 480px) {
-            .admin-login-container {
-                padding: 40px 25px;
-                margin: 10px;
-            }
-            
-            .logo-section h1 {
-                font-size: 1.7rem;
-            }
-            
-            .logo-icon {
-                font-size: 3rem;
-            }
-            
-            .btn {
-                padding: 16px 20px;
-            }
-            
-            body {
-                padding: 10px;
-            }
-        }
-        
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-        
-        .btn:focus-visible {
-            outline: 3px solid var(--primary-color);
-            outline-offset: 2px;
-        }
-        
-        .admin-login-container,
-        .logo-section,
-        .admin-info,
-        .btn,
-        h1, h3, p {
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        .notification {
-            user-select: text;
-        }
+        :root { --primary-color: #000000; --secondary-color: #ffffff; --text-color: #000000; --text-secondary: #666666; --background-light: #f5f5f5; --shadow-light: 0 10px 30px rgba(0,0,0,0.1); --shadow-hover: 0 8px 25px rgba(0,0,0,0.2); --border-radius: 20px; --transition: all 0.3s cubic-bezier(0.4,0,0.2,1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        html, body { height: 100%; overflow: hidden; background: var(--secondary-color); color: var(--text-color); }
+        body { font-size: 14px; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #f5f7fa 0%, #e5e5e5 100%); }
+        .admin-login-container { max-width: 400px; width: 100%; background-color: var(--secondary-color); border-radius: var(--border-radius); padding: 50px 30px; box-shadow: var(--shadow-light); border: 2px solid var(--primary-color); position: relative; overflow: hidden; }
+        .admin-login-container::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--primary-color); }
+        .logo-section { text-align: center; margin-bottom: 40px; }
+        .logo-icon { font-size: 3.5rem; color: var(--primary-color); margin-bottom: 25px; text-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .logo-section h1 { font-size: 2rem; color: var(--primary-color); margin-bottom: 10px; font-weight: 600; letter-spacing: -0.5px; }
+        .logo-section p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 30px; line-height: 1.5; }
+        .admin-info { background-color: var(--background-light); border-radius: 12px; padding: 20px; margin: 30px 0; text-align: center; border: 2px solid var(--primary-color); position: relative; }
+        .admin-info::before { content: ''; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--secondary-color); padding: 0 10px; font-size: 1.2rem; color: var(--primary-color); font-weight: bold; }
+        .admin-info h3 { color: var(--primary-color); margin-bottom: 10px; font-size: 1.1rem; font-weight: 500; }
+        .admin-info p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+        .btn { padding: 18px 20px; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-size: 1rem; width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; letter-spacing: 0.3px; position: relative; overflow: hidden; }
+        .btn::before { content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%; background: rgba(0,0,0,0.1); transform: translate(-50%,-50%); transition: width 0.6s, height 0.6s; }
+        .btn:active::before { width: 300px; height: 300px; }
+        .btn-google { background-color: var(--secondary-color); color: var(--text-color); border: 2px solid var(--primary-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .btn-google:hover { background-color: var(--primary-color); color: var(--secondary-color); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .btn-google:active { transform: translateY(0); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn-google:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
+        .notification { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%); padding: 18px 25px; border-radius: 15px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); z-index: 10000; animation: fadeIn 0.3s ease; font-weight: 500; color: white; text-align: center; max-width: 300px; width: 90%; display: flex; align-items: center; justify-content: center; gap: 12px; border: 2px solid var(--primary-color); backdrop-filter: blur(10px); }
+        .notification.success { background-color: rgba(0,0,0,0.95); color: #ffffff; border-color: #000000; }
+        .notification.error { background-color: rgba(0,0,0,0.95); color: #ffffff; border-color: #000000; }
+        .notification.info { background-color: rgba(0,0,0,0.95); color: #ffffff; border-color: #000000; }
+        .notification.warning { background-color: rgba(0,0,0,0.95); color: #ffffff; border-color: #000000; }
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%,-50%) scale(0.9); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translate(-50%,-50%) scale(1); } to { opacity: 0; transform: translate(-50%,-50%) scale(0.9); } }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(0,0,0,0.2); border-radius: 50%; border-top-color: var(--primary-color); animation: spin 1s ease-in-out infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 480px) { .admin-login-container { padding: 40px 25px; margin: 10px; } .logo-section h1 { font-size: 1.7rem; } .logo-icon { font-size: 3rem; } .btn { padding: 16px 20px; } body { padding: 10px; } }
+        @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+        .btn:focus-visible { outline: 3px solid var(--primary-color); outline-offset: 2px; }
+        .admin-login-container, .logo-section, .admin-info, .btn, h1, h3, p { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+        .notification { user-select: text; }
     </style>
 </head>
 <script>
@@ -350,12 +57,9 @@
             if (data.timestamp) {
                 const timestamp = new Date(data.timestamp).getTime();
                 const maxAge = 8 * 60 * 60 * 1000;
-                
                 if (timestamp && Date.now() - timestamp <= maxAge) {
-                    // Já está logado, vai direto para admin
                     location.replace('paineladm.html');
                 } else {
-                    // Sessão expirada
                     localStorage.removeItem('adminSession');
                 }
             }
@@ -373,25 +77,20 @@
             </div>
             <h1>Tecminia Admin</h1>
             <p>Acesso exclusivo ao Painel Administrativo</p>
-            
             <div class="admin-info">
                 <h3>Acesso Restrito</h3>
                 <p>Somente administradores autorizados podem acessar este painel. Utilize sua conta Google corporativa.</p>
             </div>
         </div>
-        
         <div class="google-login-section">
             <button class="btn btn-google" id="googleLoginBtn" aria-label="Entrar com Google">
                 <i class="fab fa-google"></i> Entrar com Google
             </button>
         </div>
-        
-        <div class="version">v1.0.0</div>
     </div>
 
     <script>
         const MASTER_ADMIN_EMAIL = 'tecminia@gmail.com';
-        
         const firebaseConfig = {
             apiKey: "AIzaSyB7U-JfKAlkPxSyL4AEf5u0BgcDzSXf41M",
             authDomain: "appvendas-1eebf.firebaseapp.com",
@@ -400,11 +99,9 @@
             messagingSenderId: "229472373918",
             appId: "1:229472373918:web:39cd4940b052b2375f3f8f"
         };
-
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         const auth = firebase.auth();
-
         const googleLoginBtn = document.getElementById('googleLoginBtn');
         const SESSION_MAX_AGE = 8 * 60 * 60 * 1000;
 
@@ -414,17 +111,13 @@
                 if (adminSession) {
                     const sessionData = JSON.parse(adminSession);
                     const sessionAge = new Date() - new Date(sessionData.timestamp);
-                    
                     if (sessionAge < SESSION_MAX_AGE) {
                         try {
                             await auth.authStateReady();
                             const user = auth.currentUser;
-                            
                             if (user && user.email === sessionData.email) {
                                 const idTokenResult = await user.getIdTokenResult();
-                                
-                                if (idTokenResult.claims.admin === true || 
-                                    idTokenResult.claims.role === 'admin') {
+                                if (idTokenResult.claims.admin === true || idTokenResult.claims.role === 'admin') {
                                     redirectToAdminPanel();
                                     return;
                                 }
@@ -432,7 +125,6 @@
                         } catch (authError) {
                             console.warn('Erro na validação do Firebase:', authError);
                         }
-                        
                         if (await isValidAdmin(sessionData.email)) {
                             redirectToAdminPanel();
                             return;
@@ -443,7 +135,6 @@
                         localStorage.removeItem('adminSession');
                     }
                 }
-                
                 await initializeAdminSystem();
             } catch (error) {
                 console.error('Erro ao inicializar:', error);
@@ -456,31 +147,21 @@
         async function handleGoogleLogin() {
             try {
                 setButtonLoading(true);
-                
                 const provider = new firebase.auth.GoogleAuthProvider();
-                provider.setCustomParameters({
-                    prompt: 'select_account',
-                    login_hint: 'admin@seusistema.com'
-                });
-                
+                provider.setCustomParameters({ prompt: 'select_account', login_hint: 'admin@seusistema.com' });
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
-                
                 const isAuthorized = await verifyAdminAuthorization(user.email);
-                
                 if (!isAuthorized) {
                     await auth.signOut();
                     showNotification('Acesso não autorizado. Contate o administrador do sistema.', 'error');
                     setButtonLoading(false);
                     return;
                 }
-                
                 await createAdminSession(user);
                 await updateAdminRecord(user);
-                
                 showNotification('Login realizado com sucesso!', 'success');
                 setTimeout(redirectToAdminPanel, 1000);
-                
             } catch (error) {
                 handleLoginError(error);
             }
@@ -488,25 +169,16 @@
 
         async function verifyAdminAuthorization(userEmail) {
             try {
-                const adminDoc = await db.collection('admin')
-                    .doc('authorizedUsers')
-                    .get();
-                
+                const adminDoc = await db.collection('admin').doc('authorizedUsers').get();
                 if (!adminDoc.exists) {
                     await createInitialAdminConfig(userEmail);
                     return userEmail === MASTER_ADMIN_EMAIL;
                 }
-                
                 const authorizedAdmins = adminDoc.data().emails || [];
-                
                 if (authorizedAdmins.length === 0 && userEmail === MASTER_ADMIN_EMAIL) {
                     authorizedAdmins.push(userEmail);
-                    await db.collection('admin').doc('authorizedUsers').update({
-                        emails: authorizedAdmins,
-                        updatedAt: new Date().toISOString()
-                    });
+                    await db.collection('admin').doc('authorizedUsers').update({ emails: authorizedAdmins, updatedAt: new Date().toISOString() });
                 }
-                
                 return authorizedAdmins.includes(userEmail);
             } catch (error) {
                 console.error('Erro ao verificar autorização:', error);
@@ -517,8 +189,7 @@
         async function createInitialAdminConfig(firstAdminEmail) {
             try {
                 await db.collection('admin').doc('authorizedUsers').set({
-                    emails: firstAdminEmail === MASTER_ADMIN_EMAIL ? 
-                            [MASTER_ADMIN_EMAIL] : [],
+                    emails: firstAdminEmail === MASTER_ADMIN_EMAIL ? [MASTER_ADMIN_EMAIL] : [],
                     createdAt: new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
                     createdBy: 'system',
@@ -539,7 +210,6 @@
                 timestamp: new Date().toISOString(),
                 sessionId: generateSessionId()
             };
-            
             localStorage.setItem('adminSession', JSON.stringify(adminSession));
         }
 
@@ -555,12 +225,7 @@
                     loginCount: firebase.firestore.FieldValue.increment(1),
                     updatedAt: new Date().toISOString()
                 };
-                
-                await db.collection('admin')
-                    .doc('users')
-                    .collection('admins')
-                    .doc(user.uid)
-                    .set(adminData, { merge: true });
+                await db.collection('admin').doc('users').collection('admins').doc(user.uid).set(adminData, { merge: true });
             } catch (error) {
                 console.error('Erro ao atualizar registro:', error);
             }
@@ -568,32 +233,16 @@
 
         function handleLoginError(error) {
             console.error('Erro no login:', error);
-            
             let errorMessage = 'Erro ao fazer login com Google.';
             let errorType = 'error';
-            
             switch (error.code) {
-                case 'auth/popup-closed-by-user':
-                    errorMessage = 'Login cancelado.';
-                    errorType = 'warning';
-                    break;
-                case 'auth/account-exists-with-different-credential':
-                    errorMessage = 'Esta conta já está cadastrada com outro método de login.';
-                    break;
-                case 'auth/popup-blocked':
-                    errorMessage = 'Pop-up bloqueado. Por favor, permita pop-ups para este site.';
-                    break;
-                case 'auth/network-request-failed':
-                    errorMessage = 'Erro de conexão. Verifique sua internet.';
-                    break;
-                case 'auth/unauthorized-domain':
-                    errorMessage = 'Domínio não autorizado para login.';
-                    break;
-                case 'auth/operation-not-allowed':
-                    errorMessage = 'Operação não permitida. Contate o suporte.';
-                    break;
+                case 'auth/popup-closed-by-user': errorMessage = 'Login cancelado.'; errorType = 'warning'; break;
+                case 'auth/account-exists-with-different-credential': errorMessage = 'Esta conta já está cadastrada com outro método de login.'; break;
+                case 'auth/popup-blocked': errorMessage = 'Pop-up bloqueado. Por favor, permita pop-ups para este site.'; break;
+                case 'auth/network-request-failed': errorMessage = 'Erro de conexão. Verifique sua internet.'; break;
+                case 'auth/unauthorized-domain': errorMessage = 'Domínio não autorizado para login.'; break;
+                case 'auth/operation-not-allowed': errorMessage = 'Operação não permitida. Contate o suporte.'; break;
             }
-            
             showNotification(errorMessage, errorType);
             setButtonLoading(false);
         }
@@ -610,24 +259,17 @@
 
         function showNotification(message, type = 'info', duration = 3000) {
             const existingNotifications = document.querySelectorAll('.notification');
-            existingNotifications.forEach(notification => {
-                notification.remove();
-            });
-            
+            existingNotifications.forEach(notification => notification.remove());
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.setAttribute('role', 'alert');
             notification.setAttribute('aria-live', 'assertive');
-            
             notification.innerHTML = `<span>${message}</span>`;
             document.body.appendChild(notification);
-            
             setTimeout(() => {
                 notification.style.animation = 'fadeOut 0.3s ease';
                 setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
+                    if (notification.parentNode) notification.remove();
                 }, 300);
             }, duration);
         }
@@ -635,7 +277,6 @@
         async function initializeAdminSystem() {
             try {
                 const adminDoc = await db.collection('admin').doc('authorizedUsers').get();
-                
                 if (!adminDoc.exists) {
                     await db.collection('admin').doc('authorizedUsers').set({
                         emails: [],
@@ -643,11 +284,7 @@
                         updatedAt: new Date().toISOString(),
                         createdBy: 'system',
                         masterAdmin: MASTER_ADMIN_EMAIL,
-                        settings: {
-                            maxAdmins: 5,
-                            requireTwoFactor: false,
-                            sessionTimeout: 8
-                        }
+                        settings: { maxAdmins: 5, requireTwoFactor: false, sessionTimeout: 8 }
                     });
                 }
             } catch (error) {
@@ -659,7 +296,6 @@
             try {
                 const adminDoc = await db.collection('admin').doc('authorizedUsers').get();
                 if (!adminDoc.exists) return false;
-                
                 const authorizedAdmins = adminDoc.data().emails || [];
                 return authorizedAdmins.includes(email);
             } catch (error) {
@@ -678,10 +314,7 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('Usuário autenticado:', user.email);
-                
-                user.getIdTokenResult(true).then((idTokenResult) => {
-                    console.log('Claims do usuário:', idTokenResult.claims);
-                });
+                user.getIdTokenResult(true).then((idTokenResult) => console.log('Claims do usuário:', idTokenResult.claims));
             }
         });
 
