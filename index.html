@@ -3,278 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecionando | Sistema Admin</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #1a1a1a;
-        }
-
-        .container {
-            text-align: center;
-            padding: 3rem 2rem;
-            max-width: 90%;
-            width: 400px;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 500;
-            margin-bottom: 2rem;
-            color: #2d2d2d;
-            letter-spacing: 0.5px;
-        }
-
-        .spinner-wrapper {
-            margin: 0 auto 2.5rem;
-            position: relative;
-            width: 72px;
-            height: 72px;
-        }
-
-        .spinner {
-            width: 72px;
-            height: 72px;
-            border: 2px solid rgba(45, 45, 45, 0.1);
-            border-radius: 50%;
-            border-top-color: #1a1a1a;
-            animation: spin 1.2s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
-        }
-
-        .spinner-inner {
-            position: absolute;
-            top: 18px;
-            left: 18px;
-            width: 36px;
-            height: 36px;
-            border: 1.5px solid rgba(45, 45, 45, 0.05);
-            border-radius: 50%;
-            border-bottom-color: #1a1a1a;
-            animation: spinReverse 0.9s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
-        }
-
-        .message {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            color: #2d2d2d;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-        }
-
-        .status {
-            font-size: 0.9rem;
-            color: #666666;
-            margin-top: 1.5rem;
-            padding: 0.8rem;
-            background: rgba(45, 45, 45, 0.03);
-            border-radius: 8px;
-            display: inline-block;
-            min-height: 40px;
-            min-width: 280px;
-            transition: all 0.3s ease;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 1px;
-            background: rgba(45, 45, 45, 0.08);
-            margin-top: 2rem;
-            overflow: hidden;
-            border-radius: 1px;
-        }
-
-        .progress {
-            height: 100%;
-            width: 40%;
-            background: #1a1a1a;
-            border-radius: 1px;
-            animation: progress 2s ease-in-out infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes spinReverse {
-            to { transform: rotate(-360deg); }
-        }
-
-        @keyframes progress {
-            0% { 
-                transform: translateX(-100%);
-                opacity: 0.3;
-            }
-            50% {
-                opacity: 0.7;
-            }
-            100% { 
-                transform: translateX(250%);
-                opacity: 0.3;
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 2rem 1.5rem;
-            }
-            
-            .spinner-wrapper {
-                width: 60px;
-                height: 60px;
-                margin-bottom: 2rem;
-            }
-            
-            .spinner {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .spinner-inner {
-                top: 15px;
-                left: 15px;
-                width: 30px;
-                height: 30px;
-            }
-            
-            .status {
-                min-width: 240px;
-                font-size: 0.85rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container fade-in">
-        <div class="logo">SISTEMA ADMINISTRATIVO</div>
-        
-        <div class="spinner-wrapper">
-            <div class="spinner"></div>
-            <div class="spinner-inner"></div>
-        </div>
-        
-        <div class="message">Verificando autenticação</div>
-        <div class="status" id="statusText">Inicializando sistema...</div>
-        
-        <div class="progress-container">
-            <div class="progress"></div>
-        </div>
-    </div>
-
+    <title>Login | Adm</title>
     <script>
 (function () {
-    let currentStep = 0;
-    const steps = [
-        "Verificando dados de sessão...",
-        "Validando credenciais...",
-        "Checando expiração...",
-        "Redirecionando..."
-    ];
-
-    const statusEl = document.getElementById('statusText');
-    
-    function updateStatus(text) {
-        if (statusEl) {
-            statusEl.textContent = text;
-            statusEl.style.opacity = '0.7';
-            setTimeout(() => {
-                statusEl.style.opacity = '1';
-            }, 50);
+    try {
+        const raw = localStorage.getItem('adminSession');
+        if (!raw) {
+            location.replace('login.html');
+            return;
         }
-    }
 
-    function nextStep() {
-        if (currentStep < steps.length) {
-            updateStatus(steps[currentStep]);
-            currentStep++;
+        const data = JSON.parse(raw);
+        if (!data.timestamp) {
+            localStorage.removeItem('adminSession');
+            location.replace('login.html');
+            return;
         }
-    }
 
-    function executeAuthCheck() {
-        try {
-            nextStep();
-            
-            setTimeout(() => {
-                const raw = localStorage.getItem('adminSession');
-                if (!raw) {
-                    updateStatus("Sessão não encontrada. Redirecionando para login...");
-                    setTimeout(() => location.replace('login.html'), 600);
-                    return;
-                }
-
-                nextStep();
-                
-                setTimeout(() => {
-                    const data = JSON.parse(raw);
-                    if (!data.timestamp) {
-                        localStorage.removeItem('adminSession');
-                        updateStatus("Sessão inválida. Redirecionando para login...");
-                        setTimeout(() => location.replace('login.html'), 600);
-                        return;
-                    }
-
-                    nextStep();
-                    
-                    const timestamp = new Date(data.timestamp).getTime();
-                    if (!timestamp) {
-                        localStorage.removeItem('adminSession');
-                        updateStatus("Timestamp inválido. Redirecionando para login...");
-                        setTimeout(() => location.replace('login.html'), 600);
-                        return;
-                    }
-
-                    const maxAge = 8 * 60 * 60 * 1000;
-                    const timeDiff = Date.now() - timestamp;
-
-                    if (timeDiff <= maxAge) {
-                        updateStatus("Sessão válida! Acessando painel...");
-                        nextStep();
-                        setTimeout(() => location.replace('paineladm.html'), 500);
-                    } else {
-                        localStorage.removeItem('adminSession');
-                        updateStatus("Sessão expirada. Redirecionando para login...");
-                        setTimeout(() => location.replace('login.html'), 600);
-                    }
-                }, 300);
-            }, 400);
-
-        } catch (error) {
-            console.error('Erro na verificação:', error);
-            updateStatus("Erro na verificação. Redirecionando para login...");
-            setTimeout(() => location.replace('login.html'), 600);
+        const timestamp = new Date(data.timestamp).getTime();
+        if (!timestamp) {
+            localStorage.removeItem('adminSession');
+            location.replace('login.html');
+            return;
         }
+
+        const maxAge = 8 * 60 * 60 * 1000;
+        if (Date.now() - timestamp <= maxAge) {
+            // Redireciona DIRETAMENTE para paineladm.html se já logado
+            location.replace('paineladm.html');
+        } else {
+            localStorage.removeItem('adminSession');
+            location.replace('login.html');
+        }
+
+    } catch {
+        location.replace('login.html');
     }
-
-    // Inicia a verificação após um breve delay
-    setTimeout(executeAuthCheck, 600);
-    
-    // Timeout de segurança (10 segundos)
-    setTimeout(() => {
-        updateStatus("Tempo limite excedido. Redirecionando...");
-        setTimeout(() => location.replace('login.html'), 500);
-    }, 10000);
-
 })();
     </script>
+</head>
+<body>
+    <p>Redirecionando...</p>
 </body>
 </html>
