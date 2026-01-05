@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Painel | Adm</title>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,7 +19,18 @@
     
     <style>
         :root {
-            --primary-color: #212121; --secondary-color: #424242; --success-color: #4CAF50; --warning-color: #FF9800; --danger-color: #F44336; --info-color: #2196F3; --light-bg: #f5f5f5; --card-bg: #ffffff; --border-color: #e0e0e0; --text-primary: #212121; --text-secondary: #757575; --shadow: 0 2px 10px rgba(0,0,0,0.08);
+            --primary-color: #212121;
+            --secondary-color: #424242;
+            --success-color: #4CAF50;
+            --warning-color: #FF9800;
+            --danger-color: #F44336;
+            --info-color: #2196F3;
+            --light-bg: #f5f5f5;
+            --card-bg: #ffffff;
+            --border-color: #e0e0e0;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
         html, body { height: 100%; overflow: hidden; background: var(--light-bg); color: var(--text-primary); }
@@ -129,7 +140,6 @@
         .notification.error { background: var(--danger-color); }
         .notification.info { background: var(--info-color); }
         
-        /* Botões minimalistas para pagamentos */
         .icon-action-btn {
             width: 36px;
             height: 36px;
@@ -195,6 +205,7 @@
                 </div>
                 <div class="header-actions">
                     <button class="icon-btn" id="refreshBtn" title="Atualizar"><i class="fas fa-sync-alt"></i></button>
+                    <button class="icon-btn" id="logoutBtn" title="Sair"><i class="fas fa-sign-out-alt"></i></button>
                 </div>
             </div>
         </header>
@@ -261,70 +272,27 @@
                             <input type="number" id="expirationWarningDays" class="form-input" min="1" max="30" value="7" required>
                             <span class="form-hint">Dias antes do vencimento para notificar o usuário</span>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Mensagem de Notificação WhatsApp</label>
-                            <textarea id="whatsappMessage" class="form-textarea" rows="5">📱 *NOVO PAGAMENTO PENDENTE* 📱
-
-👤 *Cliente:* {nome}
-🏪 *Loja:* {loja}
-📧 *E-mail:* {email}
-📱 *Telefone:* {telefone}
-💵 *Plano:* Mensal
-💰 *Valor:* R$ {valor}
-📅 *Data:* {data}
-
-⚠️ *Status:* Aguardando confirmação
-
-Por favor, acesse o painel administrativo para verificar o comprovante e liberar o acesso.</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Mensagem de Pagamento Aprovado (para cliente)</label>
-                            <textarea id="paymentApprovedMessage" class="form-textarea" rows="5">✅ *PAGAMENTO APROVADO!* ✅
-
-Olá {nome}! 👋
-
-Seu pagamento foi *APROVADO* com sucesso! 🎉
-
-🏪 *Loja:* {loja}
-💵 *Plano:* {plano}
-📅 *Válido até:* {validade}
-💰 *Valor:* R$ {valor}
-
-Agora você já pode acessar sua conta e começar a usar todas as funcionalidades do Venda+!
-
-🔗 *Acesse:* https://seusite.com/login
-
-Em caso de dúvidas, estamos à disposição!
-
-Atenciosamente,
-Equipe Venda+ 📱</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Mensagem de Pagamento Rejeitado (para cliente)</label>
-                            <textarea id="paymentRejectedMessage" class="form-textarea" rows="5">❌ *PAGAMENTO REJEITADO* ❌
-
-Olá {nome},
-
-Lamentamos informar que seu pagamento foi *REJEITADO*.
-
-🏪 *Loja:* {loja}
-💵 *Plano:* {plano}
-💰 *Valor:* R$ {valor}
-📅 *Data:* {data}
-
-📋 *Motivo:* Comprovante não identificado ou informações inconsistentes.
-
-🔍 *O que fazer:*
-1. Verifique se o comprovante está legível
-2. Confirme se os dados estão corretos
-3. Envie novamente o comprovante
-
-Para mais informações, entre em contato conosco.
-
-Atenciosamente,
-Equipe Venda+ 📱</textarea>
-                        </div>
                         <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Salvar Configurações</button>
+                    </form>
+                </div>
+                
+                <div class="settings-section">
+                    <h2 class="section-title">Alterar Senha</h2>
+                    <form id="changePasswordForm">
+                        <div class="form-group">
+                            <label class="form-label">Senha Atual</label>
+                            <input type="password" id="currentPassword" class="form-input" placeholder="Digite sua senha atual" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nova Senha</label>
+                            <input type="password" id="newPassword" class="form-input" placeholder="Digite a nova senha" required minlength="6">
+                            <span class="form-hint">Mínimo 6 caracteres</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirmar Nova Senha</label>
+                            <input type="password" id="confirmPassword" class="form-input" placeholder="Confirme a nova senha" required minlength="6">
+                        </div>
+                        <button type="submit" class="submit-btn"><i class="fas fa-key"></i> Alterar Senha</button>
                     </form>
                 </div>
                 
@@ -475,6 +443,7 @@ Equipe Venda+ 📱</textarea>
         let dragStartY = 0;
 
         const refreshBtn = document.getElementById('refreshBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
         const newUserBtn = document.getElementById('newUserBtn');
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
@@ -497,13 +466,14 @@ Equipe Venda+ 📱</textarea>
         const imageViewerZoomInfo = document.getElementById('imageViewerZoomInfo');
         
         const paymentSettingsForm = document.getElementById('paymentSettingsForm');
+        const changePasswordForm = document.getElementById('changePasswordForm');
         const pixKeyInput = document.getElementById('pixKey');
         const adminWhatsAppInput = document.getElementById('adminWhatsApp');
         const monthlyPlanPriceInput = document.getElementById('monthlyPlanPrice');
         const expirationWarningDaysInput = document.getElementById('expirationWarningDays');
-        const whatsappMessageInput = document.getElementById('whatsappMessage');
-        const paymentApprovedMessageInput = document.getElementById('paymentApprovedMessage');
-        const paymentRejectedMessageInput = document.getElementById('paymentRejectedMessage');
+        const currentPasswordInput = document.getElementById('currentPassword');
+        const newPasswordInput = document.getElementById('newPassword');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
         
         const newUserForm = document.getElementById('newUserForm');
         const newUserPlanSelect = document.getElementById('newUserPlan');
@@ -660,23 +630,13 @@ Equipe Venda+ 📱</textarea>
                 const sessionData = JSON.parse(adminSession);
                 adminUser = sessionData;
                 
-                const sessionAge = new Date() - new Date(sessionData.timestamp);
-                const maxAge = 8 * 60 * 60 * 1000;
-                
-                if (sessionAge > maxAge) {
-                    localStorage.removeItem('adminSession');
-                    showNotification('Sessão expirada. Faça login novamente.', 'error');
-                    setTimeout(() => { redirectToLogin(); }, 2000);
-                    return;
-                }
-                
                 try {
                     const user = auth.currentUser;
                     if (user && user.email !== adminUser.email) {
                         adminUser = {
                             uid: user.uid,
                             email: user.email,
-                            name: user.displayName,
+                            name: user.displayName || user.email.split('@')[0],
                             photoURL: user.photoURL,
                             loggedIn: true,
                             timestamp: new Date().toISOString()
@@ -728,9 +688,6 @@ Equipe Venda+ 📱</textarea>
                         adminWhatsApp: '(11) 99999-9999',
                         monthlyPlanPrice: 99.00,
                         expirationWarningDays: 7,
-                        whatsappMessage: whatsappMessageInput.value,
-                        paymentApprovedMessage: paymentApprovedMessageInput.value,
-                        paymentRejectedMessage: paymentRejectedMessageInput.value,
                         updatedAt: new Date().toISOString()
                     };
                     await db.collection('systemConfig').doc('paymentSettings').set(systemConfig);
@@ -747,9 +704,6 @@ Equipe Venda+ 📱</textarea>
             if (adminWhatsAppInput) adminWhatsAppInput.value = systemConfig.adminWhatsApp || '';
             if (monthlyPlanPriceInput) monthlyPlanPriceInput.value = systemConfig.monthlyPlanPrice || 99.00;
             if (expirationWarningDaysInput) expirationWarningDaysInput.value = systemConfig.expirationWarningDays || 7;
-            if (whatsappMessageInput) whatsappMessageInput.value = systemConfig.whatsappMessage || '';
-            if (paymentApprovedMessageInput) paymentApprovedMessageInput.value = systemConfig.paymentApprovedMessage || '';
-            if (paymentRejectedMessageInput) paymentRejectedMessageInput.value = systemConfig.paymentRejectedMessage || '';
         }
 
         async function loadAllUsers() {
@@ -800,7 +754,6 @@ Equipe Venda+ 📱</textarea>
             const expiredUsers = users.filter(user => user.status === 'expired').length;
             const renewalPendingUsers = users.filter(user => user.renewalStatus === 'pending').length;
             
-            // Removida contagem de usuários de teste grátis
             const stats = [
                 { icon: 'users', label: 'Total', value: totalUsers, color: 'total' },
                 { icon: 'check-circle', label: 'Ativos', value: activeUsers, color: 'active' },
@@ -953,11 +906,6 @@ Equipe Venda+ 📱</textarea>
                                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                                 </svg>
                             </button>
-                            <button class="icon-action-btn message" title="Enviar mensagem" data-id="${payment.id}" data-action="sendMessage">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                                </svg>
-                            </button>
                             <button class="icon-action-btn reject" title="Rejeitar pagamento" data-id="${payment.id}" data-action="reject">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
@@ -967,11 +915,6 @@ Equipe Venda+ 📱</textarea>
                             <button class="icon-action-btn view" title="Ver detalhes" data-id="${payment.id}" data-action="view">
                                 <svg viewBox="0 0 24 24">
                                     <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                                </svg>
-                            </button>
-                            <button class="icon-action-btn whatsapp" title="Enviar WhatsApp" data-id="${payment.id}" data-action="whatsapp">
-                                <svg viewBox="0 0 24 24">
-                                    <path d="M16.75 13.96c.25.13.41.2.46.3.06.11.04.61-.21 1.18-.2.56-1.24 1.1-1.7 1.12-.46.02-.47.36-2.96-.73-2.49-1.09-3.99-3.75-4.11-3.92-.12-.17-.96-1.38-.92-2.61.05-1.22.69-1.8.95-2.04.24-.26.51-.29.68-.26h.47c.15 0 .36-.06.55.45l.69 1.87c.06.13.1.28.01.44l-.27.41-.39.42c-.12.12-.26.25-.12.5.12.26.62 1.09 1.32 1.78.91.88 1.71 1.17 1.95 1.3.24.14.39.12.54-.04l.81-.94c.19-.25.35-.19.58-.11l1.67.88M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10c-1.97 0-3.8-.57-5.35-1.55L2 22l1.55-4.65A9.969 9.969 0 0 1 2 12 10 10 0 0 1 12 2m0 2a8 8 0 0 0-8 8c0 1.72.54 3.31 1.46 4.61L4.5 19.5l2.89-.96A7.95 7.95 0 0 0 12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8z"/>
                                 </svg>
                             </button>
                             <button class="icon-action-btn delete" title="Excluir pagamento" data-id="${payment.id}" data-action="delete">
@@ -1003,14 +946,8 @@ Equipe Venda+ 📱</textarea>
                         case 'finish':
                             finishPayment(id);
                             break;
-                        case 'sendMessage':
-                            sendApprovalMessage(id);
-                            break;
                         case 'reject':
                             rejectPayment(id);
-                            break;
-                        case 'whatsapp':
-                            sendWhatsAppMessage(id);
                             break;
                         case 'delete':
                             showDeleteConfirmation(id);
@@ -1026,27 +963,46 @@ Equipe Venda+ 📱</textarea>
                 await loadAllPayments();
                 showNotification('Dados atualizados!', 'success');
             });
+            
+            logoutBtn.addEventListener('click', async () => {
+                try {
+                    await auth.signOut();
+                    localStorage.removeItem('adminSession');
+                    showNotification('Logout realizado!', 'success');
+                    setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+                } catch (error) {
+                    console.error('Error logging out:', error);
+                }
+            });
+            
             newUserBtn.addEventListener('click', () => {
                 newUserModal.style.display = 'flex';
                 setTimeout(() => { document.getElementById('newStoreName')?.focus(); }, 300);
             });
+            
             tabBtns.forEach(btn => {
                 btn.addEventListener('click', () => { switchTab(btn.getAttribute('data-tab')); });
             });
+            
             searchUsers.addEventListener('input', updateUsersList);
             searchPayments.addEventListener('input', updatePaymentsList);
+            
             paymentSettingsForm.addEventListener('submit', saveSystemConfig);
+            changePasswordForm.addEventListener('submit', changePassword);
             clearCacheBtn.addEventListener('click', clearCache);
+            
             closeUserModal.addEventListener('click', () => userDetailsModal.style.display = 'none');
             closePaymentModal.addEventListener('click', () => paymentDetailsModal.style.display = 'none');
             closeNewUserModal.addEventListener('click', closeNewUser);
             cancelNewUserBtn.addEventListener('click', closeNewUser);
             closeDeleteModal.addEventListener('click', closeDeleteModalHandler);
             cancelDeleteBtn.addEventListener('click', closeDeleteModalHandler);
+            
             newUserForm.addEventListener('submit', createNewUser);
             newUserPlanSelect.addEventListener('change', function() {
                 customDaysGroup.style.display = this.value === 'custom' ? 'block' : 'none';
             });
+            
             window.addEventListener('click', (e) => {
                 if (e.target === userDetailsModal) userDetailsModal.style.display = 'none';
                 if (e.target === paymentDetailsModal) paymentDetailsModal.style.display = 'none';
@@ -1054,10 +1010,13 @@ Equipe Venda+ 📱</textarea>
                 if (e.target === deleteConfirmationModal) closeDeleteModalHandler();
                 if (e.target === imageViewer) imageViewer.style.display = 'none';
             });
+            
             confirmationInput.addEventListener('input', function() {
                 confirmDeleteBtn.disabled = this.value !== 'CONFIRMAR';
             });
+            
             confirmDeleteBtn.addEventListener('click', deletePayment);
+            
             if (adminWhatsAppInput) new IMask(adminWhatsAppInput, { mask: '(00) 00000-0000', lazy: false });
         }
 
@@ -1224,7 +1183,6 @@ Equipe Venda+ 📱</textarea>
                         <div class="form-input" style="background: #f0f9ff; border-left: 4px solid var(--info-color);">
                             <div><strong>Data de vencimento original:</strong> ${formatDate(payment.originalExpiryDate)}</div>
                             <div><strong>Nova data de vencimento:</strong> ${formatDate(payment.newExpiryDate)}</div>
-                            <div><strong>WhatsApp enviado:</strong> ${payment.whatsappSent ? 'Sim' : 'Não'}</div>
                             ${payment.notes ? `<div><strong>Observações:</strong> ${payment.notes}</div>` : ''}
                         </div>
                     </div>
@@ -1319,79 +1277,6 @@ Equipe Venda+ 📱</textarea>
             }
         }
 
-        async function sendApprovalMessage(paymentId) {
-            try {
-                const payment = payments.find(p => p.id === paymentId);
-                if (!payment) return;
-                
-                const userPhone = payment.userPhone;
-                if (!userPhone) { 
-                    showNotification('Telefone do cliente não informado para WhatsApp.', 'warning');
-                    return; 
-                }
-                
-                const cleanPhone = userPhone.replace(/\D/g, '');
-                if (cleanPhone.length < 10) { 
-                    showNotification('Número de telefone inválido para WhatsApp.', 'warning');
-                    return; 
-                }
-                
-                const messageTemplate = systemConfig.paymentApprovedMessage || '';
-                if (!messageTemplate) { 
-                    showNotification('Mensagem de aprovação não configurada.', 'warning');
-                    return; 
-                }
-                
-                const user = users.find(u => u.id === payment.userId);
-                let expiryDateStr = '';
-                if (user && user.expiryDate) {
-                    expiryDateStr = user.expiryDate;
-                } else {
-                    let newExpiryDate = new Date();
-                    if (payment.type === 'renewal' && user && user.expiryDate) {
-                        const currentExpiry = new Date(user.expiryDate);
-                        const today = new Date();
-                        today.setHours(0, 0, 0, 0);
-                        if (currentExpiry > today) newExpiryDate = new Date(currentExpiry);
-                    }
-                    const planDays = (payment.plan === 'custom' && payment.planDays) ? parseInt(payment.planDays) : 30;
-                    newExpiryDate.setDate(newExpiryDate.getDate() + planDays);
-                    expiryDateStr = newExpiryDate.toISOString().split('T')[0];
-                }
-                
-                const formattedDate = new Date().toLocaleDateString('pt-BR');
-                const formattedExpiryDate = new Date(expiryDateStr).toLocaleDateString('pt-BR');
-                
-                let finalMessage = messageTemplate
-                    .replace(/{nome}/g, payment.userName || 'Cliente')
-                    .replace(/{loja}/g, payment.storeName || '')
-                    .replace(/{plano}/g, payment.plan === 'monthly' ? 'Mensal' : 'Personalizado')
-                    .replace(/{valor}/g, payment.amount?.toFixed(2).replace('.', ',') || '0,00')
-                    .replace(/{data}/g, formattedDate)
-                    .replace(/{validade}/g, formattedExpiryDate)
-                    .replace(/{email}/g, payment.userEmail || '')
-                    .replace(/{telefone}/g, payment.userPhone || '');
-                
-                const encodedMessage = encodeURIComponent(finalMessage);
-                const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodedMessage}`;
-                
-                const link = document.createElement('a');
-                link.href = whatsappUrl;
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                
-                setTimeout(() => { document.body.removeChild(link); }, 100);
-                
-                showNotification('Mensagem enviada via WhatsApp!', 'success');
-            } catch (error) { 
-                console.error('Error sending approval message:', error);
-                showNotification('Erro ao enviar mensagem.', 'error');
-            }
-        }
-
         async function rejectPayment(paymentId) {
             try {
                 const payment = payments.find(p => p.id === paymentId);
@@ -1420,80 +1305,6 @@ Equipe Venda+ 📱</textarea>
             } catch (error) {
                 console.error('Error rejecting payment:', error);
                 showNotification('Erro ao rejeitar pagamento.', 'error');
-            }
-        }
-
-        async function sendWhatsAppMessage(paymentId) {
-            try {
-                const payment = payments.find(p => p.id === paymentId);
-                if (!payment) return;
-                
-                const userPhone = payment.userPhone;
-                if (!userPhone) { showNotification('Telefone do cliente não informado.', 'error'); return; }
-                
-                const cleanPhone = userPhone.replace(/\D/g, '');
-                if (cleanPhone.length < 10) { showNotification('Número de telefone inválido.', 'error'); return; }
-                
-                let messageTemplate = '';
-                let messageType = '';
-                
-                if (payment.status === 'approved') {
-                    messageTemplate = systemConfig.paymentApprovedMessage || '';
-                    messageType = 'aprovado';
-                } else if (payment.status === 'rejected') {
-                    messageTemplate = systemConfig.paymentRejectedMessage || '';
-                    messageType = 'rejeitado';
-                } else {
-                    showNotification('Só é possível enviar WhatsApp para pagamentos aprovados ou rejeitados.', 'warning');
-                    return;
-                }
-                
-                if (!messageTemplate) { showNotification(`Mensagem de ${messageType} não configurada.`, 'error'); return; }
-                
-                const user = users.find(u => u.id === payment.userId);
-                const paymentDate = new Date(payment.createdAt);
-                const formattedDate = paymentDate.toLocaleDateString('pt-BR');
-                let expiryDate = '';
-                if (payment.status === 'approved' && user) {
-                    expiryDate = user.expiryDate || '';
-                    if (expiryDate) {
-                        const expiryDateObj = new Date(expiryDate);
-                        expiryDate = expiryDateObj.toLocaleDateString('pt-BR');
-                    }
-                }
-                
-                let finalMessage = messageTemplate
-                    .replace(/{nome}/g, payment.userName || 'Cliente')
-                    .replace(/{loja}/g, payment.storeName || '')
-                    .replace(/{plano}/g, payment.plan === 'monthly' ? 'Mensal' : 'Personalizado')
-                    .replace(/{valor}/g, payment.amount?.toFixed(2).replace('.', ',') || '0,00')
-                    .replace(/{data}/g, formattedDate)
-                    .replace(/{validade}/g, expiryDate)
-                    .replace(/{email}/g, payment.userEmail || '')
-                    .replace(/{telefone}/g, payment.userPhone || '');
-                
-                const encodedMessage = encodeURIComponent(finalMessage);
-                const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodedMessage}`;
-                
-                const link = document.createElement('a');
-                link.href = whatsappUrl;
-                link.target = '_blank';
-                link.rel = 'noopener noreferrer';
-                link.style.display = 'none';
-                document.body.appendChild(link);
-                link.click();
-                
-                setTimeout(() => { document.body.removeChild(link); }, 100);
-                
-                showNotification(`WhatsApp enviado! Status: ${messageType}`, 'success');
-                await db.collection('payments').doc(paymentId).update({
-                    whatsappSent: true,
-                    whatsappSentAt: new Date().toISOString(),
-                    whatsappSentBy: adminUser.email
-                });
-            } catch (error) {
-                console.error('Error sending WhatsApp:', error);
-                showNotification('Erro ao enviar WhatsApp.', 'error');
             }
         }
 
@@ -1546,6 +1357,8 @@ Equipe Venda+ 📱</textarea>
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
                 
+                await user.sendEmailVerification();
+                
                 let expiryDate = '';
                 if (status === 'active') {
                     const date = new Date();
@@ -1567,12 +1380,13 @@ Equipe Venda+ 📱</textarea>
                     renewalStatus: 'none',
                     createdAt: new Date().toISOString(),
                     createdBy: adminUser.email,
-                    lastActivity: new Date().toISOString()
+                    lastActivity: new Date().toISOString(),
+                    emailVerified: false
                 });
                 
                 closeNewUser();
                 await loadAllUsers();
-                showNotification('Usuário criado com sucesso!', 'success');
+                showNotification('Usuário criado com sucesso! E-mail de verificação enviado.', 'success');
                 hideLoading();
             } catch (error) {
                 console.error('Error creating user:', error);
@@ -1593,9 +1407,6 @@ Equipe Venda+ 📱</textarea>
                 adminWhatsApp: adminWhatsAppInput.value,
                 monthlyPlanPrice: parseFloat(monthlyPlanPriceInput.value) || 99.00,
                 expirationWarningDays: parseInt(expirationWarningDaysInput.value) || 7,
-                whatsappMessage: whatsappMessageInput.value,
-                paymentApprovedMessage: paymentApprovedMessageInput.value,
-                paymentRejectedMessage: paymentRejectedMessageInput.value,
                 updatedAt: new Date().toISOString(),
                 updatedBy: adminUser.email
             };
@@ -1607,6 +1418,48 @@ Equipe Venda+ 📱</textarea>
             } catch (error) {
                 console.error('Error saving system config:', error);
                 showNotification('Erro ao salvar configurações.', 'error');
+            }
+        }
+
+        async function changePassword(e) {
+            e.preventDefault();
+            
+            const currentPassword = currentPasswordInput.value;
+            const newPassword = newPasswordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (newPassword !== confirmPassword) {
+                showNotification('As senhas não coincidem.', 'error');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                showNotification('A nova senha deve ter pelo menos 6 caracteres.', 'error');
+                return;
+            }
+            
+            try {
+                showLoading();
+                
+                const user = auth.currentUser;
+                const credential = firebase.auth.EmailAuthProvider.credential(user.email, currentPassword);
+                
+                await user.reauthenticateWithCredential(credential);
+                await user.updatePassword(newPassword);
+                
+                currentPasswordInput.value = '';
+                newPasswordInput.value = '';
+                confirmPasswordInput.value = '';
+                
+                showNotification('Senha alterada com sucesso!', 'success');
+                hideLoading();
+            } catch (error) {
+                console.error('Error changing password:', error);
+                let errorMessage = 'Erro ao alterar senha.';
+                if (error.code === 'auth/wrong-password') errorMessage = 'Senha atual incorreta.';
+                else if (error.code === 'auth/weak-password') errorMessage = 'A nova senha é muito fraca.';
+                showNotification(errorMessage, 'error');
+                hideLoading();
             }
         }
 
