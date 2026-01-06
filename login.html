@@ -486,9 +486,6 @@
         const passwordToggle = document.getElementById('passwordToggle');
         const passwordInput = document.getElementById('password');
         
-        // Variável para armazenar o primeiro email cadastrado
-        let firstAdminEmail = null;
-        
         // Toggle password visibility
         passwordToggle.addEventListener('click', function() {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -501,26 +498,43 @@
                 const adminSession = localStorage.getItem('adminSession');
                 if (adminSession) {
                     const sessionData = JSON.parse(adminSession);
-                    try {
-                        await auth.authStateReady();
-                        const user = auth.currentUser;
-                        if (user && user.email === sessionData.email) {
-                            const idTokenResult = await user.getIdTokenResult();
-                            if (idTokenResult.claims.admin === true || idTokenResult.claims.role === 'admin') {
-                                redirectToAdminPanel();
-                                return;
-                            }
-                        }
-                    } catch (authError) {
-                        console.warn('Erro na validação do Firebase:', authError);
+                    
+                    // Verifica se há um primeiro admin registrado no Firestore
+                    const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
+                    
+                    if (!firstAdminDoc.exists) {
+                        // Não há primeiro admin registrado ainda - limpa a sessão
+                        localStorage.removeItem('adminSession');
+                        await auth.signOut();
+                        return;
                     }
                     
-                    if (await isValidAdmin(sessionData.email)) {
+                    const firstAdminData = firstAdminDoc.data();
+                    const firstAdminEmail = firstAdminData.email;
+                    
+                    // Verifica se o email da sessão corresponde ao primeiro admin
+                    if (sessionData.email !== firstAdminEmail) {
+                        // Email diferente - limpa a sessão
+                        localStorage.removeItem('adminSession');
+                        await auth.signOut();
+                        showNotification('Acesso restrito. Somente o primeiro administrador registrado tem acesso.', 'error', 5000);
+                        return;
+                    }
+                    
+                    // Tenta validar com Firebase Auth
+                    await auth.authStateReady();
+                    const user = auth.currentUser;
+                    
+                    if (user && user.email === firstAdminEmail) {
+                        // Usuário válido e é o primeiro admin
                         redirectToAdminPanel();
                         return;
-                    } else {
-                        localStorage.removeItem('adminSession');
                     }
+                    
+                    // Se chegou aqui, a sessão é inválida
+                    localStorage.removeItem('adminSession');
+                    await auth.signOut();
+                    
                 }
                 
                 await initializeAdminSystem();
@@ -553,55 +567,61 @@
             try {
                 setButtonLoading(true);
                 
-                // Verifica se é o primeiro acesso
-                await checkAndRegisterFirstAdmin(email);
+                // Verifica se já existe um primeiro admin
+                const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
                 
-                const isAuthorized = await verifyAdminAuthorization(email);
-                if (!isAuthorized) {
-                    showNotification('Acesso não autorizado. Somente o primeiro email registrado tem acesso.', 'error');
-                    setButtonLoading(false);
-                    return;
-                }
-                
-                // Tenta fazer login
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-                
-                // Verificação de email removida - não é mais necessária
-                
-                await createAdminSession(user);
-                await updateAdminRecord(user);
-                showNotification('Login realizado com sucesso!', 'success');
-                setTimeout(redirectToAdminPanel, 1000);
-                
-            } catch (error) {
-                // Se for usuário não encontrado, verifica se é o primeiro acesso
-                if (error.code === 'auth/user-not-found') {
-                    const isFirstAdmin = await checkAndRegisterFirstAdmin(email);
-                    if (isFirstAdmin) {
-                        // Cria o primeiro usuário
-                        try {
-                            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                            const user = userCredential.user;
-                            
-                            // Salva o email como primeiro admin
-                            await saveFirstAdminEmail(email);
-                            
-                            await createAdminSession(user);
-                            await updateAdminRecord(user);
-                            showNotification('Primeiro administrador registrado com sucesso!', 'success');
-                            setTimeout(redirectToAdminPanel, 1000);
-                            return;
-                        } catch (createError) {
-                            handleLoginError(createError);
-                            return;
-                        }
-                    } else {
-                        showNotification('Somente o primeiro email registrado pode criar uma conta.', 'error');
+                if (!firstAdminDoc.exists) {
+                    // PRIMEIRO ACESSO - cria conta
+                    try {
+                        // Cria o usuário no Firebase Auth
+                        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                        const user = userCredential.user;
+                        
+                        // Salva como primeiro admin no Firestore
+                        await db.collection('admin').doc('firstAdmin').set({
+                            email: email,
+                            registeredAt: new Date().toISOString(),
+                            isActive: true,
+                            uid: user.uid
+                        });
+                        
+                        // Cria sessão
+                        await createAdminSession(user);
+                        showNotification('Primeiro administrador registrado com sucesso!', 'success');
+                        setTimeout(redirectToAdminPanel, 1000);
+                        return;
+                        
+                    } catch (createError) {
+                        handleLoginError(createError);
+                        return;
+                    }
+                } else {
+                    // JÁ EXISTE PRIMEIRO ADMIN - verifica se é o mesmo email
+                    const firstAdminData = firstAdminDoc.data();
+                    const firstAdminEmail = firstAdminData.email;
+                    
+                    if (email !== firstAdminEmail) {
+                        // Email diferente do primeiro admin - NÃO PERMITE ACESSO
+                        showNotification('Acesso restrito. Somente o primeiro administrador registrado tem acesso.', 'error');
                         setButtonLoading(false);
                         return;
                     }
+                    
+                    // É o primeiro admin - faz login normal
+                    try {
+                        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                        const user = userCredential.user;
+                        
+                        await createAdminSession(user);
+                        showNotification('Login realizado com sucesso!', 'success');
+                        setTimeout(redirectToAdminPanel, 1000);
+                        
+                    } catch (loginError) {
+                        handleLoginError(loginError);
+                    }
                 }
+                
+            } catch (error) {
                 handleLoginError(error);
             }
         }
@@ -617,21 +637,41 @@
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
                 
-                // Verifica se é o primeiro acesso
-                await checkAndRegisterFirstAdmin(user.email);
+                // Verifica se já existe um primeiro admin
+                const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
                 
-                const isAuthorized = await verifyAdminAuthorization(user.email);
-                if (!isAuthorized) {
-                    await auth.signOut();
-                    showNotification('Acesso não autorizado. Somente o primeiro email registrado tem acesso.', 'error');
-                    setButtonLoading(false);
-                    return;
+                if (!firstAdminDoc.exists) {
+                    // PRIMEIRO ACESSO - salva como primeiro admin
+                    await db.collection('admin').doc('firstAdmin').set({
+                        email: user.email,
+                        registeredAt: new Date().toISOString(),
+                        isActive: true,
+                        uid: user.uid,
+                        loginMethod: 'google'
+                    });
+                    
+                    await createAdminSession(user);
+                    showNotification('Primeiro administrador registrado com sucesso!', 'success');
+                    setTimeout(redirectToAdminPanel, 1000);
+                    
+                } else {
+                    // JÁ EXISTE PRIMEIRO ADMIN - verifica se é o mesmo email
+                    const firstAdminData = firstAdminDoc.data();
+                    const firstAdminEmail = firstAdminData.email;
+                    
+                    if (user.email !== firstAdminEmail) {
+                        // Email diferente - NÃO PERMITE ACESSO
+                        await auth.signOut();
+                        showNotification('Acesso restrito. Somente o primeiro administrador registrado tem acesso.', 'error');
+                        setButtonLoading(false);
+                        return;
+                    }
+                    
+                    // É o primeiro admin - cria sessão
+                    await createAdminSession(user);
+                    showNotification('Login realizado com sucesso!', 'success');
+                    setTimeout(redirectToAdminPanel, 1000);
                 }
-                
-                await createAdminSession(user);
-                await updateAdminRecord(user);
-                showNotification('Login realizado com sucesso!', 'success');
-                setTimeout(redirectToAdminPanel, 1000);
                 
             } catch (error) {
                 handleLoginError(error);
@@ -653,6 +693,18 @@
             
             try {
                 setButtonLoading(true);
+                
+                // Verifica se é o primeiro admin antes de permitir redefinição
+                const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
+                if (firstAdminDoc.exists) {
+                    const firstAdminData = firstAdminDoc.data();
+                    if (email !== firstAdminData.email) {
+                        showNotification('Somente o primeiro administrador pode redefinir a senha.', 'error');
+                        setButtonLoading(false);
+                        return;
+                    }
+                }
+                
                 await auth.sendPasswordResetEmail(email);
                 showNotification('E-mail de redefinição enviado! Verifique sua caixa de entrada e spam.', 'success');
             } catch (error) {
@@ -667,93 +719,6 @@
             return emailRegex.test(email);
         }
         
-        async function checkAndRegisterFirstAdmin(email) {
-            try {
-                // Verifica se já existe um primeiro admin salvo
-                const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
-                
-                if (!firstAdminDoc.exists) {
-                    // Primeiro acesso - pode registrar
-                    return true;
-                } else {
-                    // Verifica se o email atual é o primeiro admin
-                    const firstAdminData = firstAdminDoc.data();
-                    firstAdminEmail = firstAdminData.email;
-                    return firstAdminData.email === email;
-                }
-            } catch (error) {
-                console.error('Erro ao verificar primeiro admin:', error);
-                return false;
-            }
-        }
-        
-        async function saveFirstAdminEmail(email) {
-            try {
-                await db.collection('admin').doc('firstAdmin').set({
-                    email: email,
-                    registeredAt: new Date().toISOString(),
-                    isActive: true
-                }, { merge: true });
-                
-                firstAdminEmail = email;
-                
-                // Também adiciona à lista de administradores autorizados
-                await db.collection('admin').doc('authorizedUsers').set({
-                    emails: [email],
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    createdBy: 'system',
-                    settings: {
-                        maxAdmins: 1, // Apenas um admin permitido
-                        requireEmailVerification: false, // Removida verificação de email
-                        allowGoogleLogin: true,
-                        sessionTimeout: null // Removido timeout de sessão
-                    }
-                }, { merge: true });
-                
-                return true;
-            } catch (error) {
-                console.error('Erro ao salvar primeiro admin:', error);
-                return false;
-            }
-        }
-        
-        async function verifyAdminAuthorization(userEmail) {
-            try {
-                // Primeiro verifica se é o primeiro admin
-                const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
-                if (!firstAdminDoc.exists) {
-                    // Permite o primeiro acesso
-                    return true;
-                }
-                
-                const firstAdminData = firstAdminDoc.data();
-                return firstAdminData.email === userEmail;
-            } catch (error) {
-                console.error('Erro ao verificar autorização:', error);
-                return false;
-            }
-        }
-        
-        async function createInitialAdminConfig(firstAdminEmail) {
-            try {
-                await db.collection('admin').doc('authorizedUsers').set({
-                    emails: [firstAdminEmail],
-                    createdAt: new Date().toISOString(),
-                    updatedAt: new Date().toISOString(),
-                    createdBy: 'system',
-                    settings: {
-                        maxAdmins: 1,
-                        requireEmailVerification: false,
-                        allowGoogleLogin: true,
-                        sessionTimeout: null // Removido timeout
-                    }
-                });
-            } catch (error) {
-                console.error('Erro ao criar configuração inicial:', error);
-            }
-        }
-        
         async function createAdminSession(user) {
             const adminSession = {
                 uid: user.uid,
@@ -763,31 +728,9 @@
                 loggedIn: true,
                 timestamp: new Date().toISOString(),
                 sessionId: generateSessionId(),
-                loginMethod: user.providerData?.[0]?.providerId || 'email',
-                // Sem data de expiração - sessão permanente
-                expiresAt: null
+                loginMethod: user.providerData?.[0]?.providerId || 'email'
             };
             localStorage.setItem('adminSession', JSON.stringify(adminSession));
-        }
-        
-        async function updateAdminRecord(user) {
-            try {
-                const adminData = {
-                    email: user.email,
-                    name: user.displayName || user.email.split('@')[0],
-                    photoURL: user.photoURL,
-                    lastLogin: new Date().toISOString(),
-                    loginMethod: user.providerData?.[0]?.providerId || 'email',
-                    isActive: true,
-                    loginCount: firebase.firestore.FieldValue.increment(1),
-                    updatedAt: new Date().toISOString(),
-                    // Sem expiração
-                    accountExpires: null
-                };
-                await db.collection('admin').doc('users').collection('admins').doc(user.uid).set(adminData, { merge: true });
-            } catch (error) {
-                console.error('Erro ao atualizar registro:', error);
-            }
         }
         
         function handleLoginError(error) {
@@ -882,26 +825,18 @@
             try {
                 const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
                 if (!firstAdminDoc.exists) {
-                    // Sistema vazio - primeiro acesso será registrado
                     console.log('Sistema pronto para registro do primeiro administrador');
                 } else {
                     const firstAdminData = firstAdminDoc.data();
-                    firstAdminEmail = firstAdminData.email;
-                    console.log('Primeiro administrador registrado:', firstAdminEmail);
+                    console.log('Primeiro administrador registrado:', firstAdminData.email);
+                    
+                    // Opcional: Preenche automaticamente o campo de email
+                    document.getElementById('email').value = firstAdminData.email;
+                    document.getElementById('email').readOnly = true;
+                    document.getElementById('email').style.backgroundColor = '#f0f0f0';
                 }
             } catch (error) {
                 console.warn('Não foi possível inicializar sistema admin:', error);
-            }
-        }
-        
-        async function isValidAdmin(email) {
-            try {
-                const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
-                if (!firstAdminDoc.exists) return false;
-                const firstAdminData = firstAdminDoc.data();
-                return firstAdminData.email === email;
-            } catch (error) {
-                return false;
             }
         }
         
@@ -916,6 +851,8 @@
         auth.onAuthStateChanged((user) => {
             if (user) {
                 console.log('Usuário autenticado:', user.email);
+            } else {
+                console.log('Nenhum usuário autenticado');
             }
         });
         
