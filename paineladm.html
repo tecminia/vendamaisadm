@@ -309,7 +309,6 @@
             </div>
         </div>
         
-        <button class="fab" id="newUserBtn" title="Novo Usuário"><i class="fas fa-user-plus"></i></button>
     </div>
     
     <div class="modal" id="userDetailsModal">
@@ -332,60 +331,6 @@
             </div>
             <div class="modal-body">
                 <div id="paymentDetailsContent"></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal" id="newUserModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Novo Usuário</h2>
-                <button class="modal-close" id="closeNewUserModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="newUserForm">
-                    <div class="form-group">
-                        <label class="form-label">Nome da Loja *</label>
-                        <input type="text" id="newStoreName" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">E-mail *</label>
-                        <input type="email" id="newUserEmail" class="form-input" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Senha *</label>
-                        <input type="password" id="newUserPassword" class="form-input" required minlength="6">
-                        <span class="form-hint">Mínimo 6 caracteres</span>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Telefone (WhatsApp) *</label>
-                        <input type="text" id="newUserPhone" class="form-input" placeholder="(11) 99999-9999" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Plano</label>
-                        <select id="newUserPlan" class="form-input">
-                            <option value="monthly">Mensal (30 dias)</option>
-                            <option value="custom">Personalizado</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="customDaysGroup" style="display: none;">
-                        <label class="form-label">Dias de Plano Personalizado *</label>
-                        <input type="number" id="customPlanDays" class="form-input" min="1" max="365" value="30" placeholder="Digite o número de dias">
-                        <span class="form-hint">Digite a quantidade de dias que o plano terá (1-365)</span>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Status</label>
-                        <select id="newUserStatus" class="form-input">
-                            <option value="active">Ativo</option>
-                            <option value="pending">Pendente</option>
-                            <option value="blocked">Bloqueado</option>
-                        </select>
-                    </div>
-                    <div class="flex gap-2 mt-2">
-                        <button type="button" class="submit-btn" style="background: #757575;" id="cancelNewUserBtn">Cancelar</button>
-                        <button type="submit" class="submit-btn"><i class="fas fa-user-plus"></i> Criar Usuário</button>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
@@ -444,7 +389,6 @@
 
         const refreshBtn = document.getElementById('refreshBtn');
         const logoutBtn = document.getElementById('logoutBtn');
-        const newUserBtn = document.getElementById('newUserBtn');
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
         const statsGrid = document.getElementById('statsGrid');
@@ -475,18 +419,10 @@
         const newPasswordInput = document.getElementById('newPassword');
         const confirmPasswordInput = document.getElementById('confirmPassword');
         
-        const newUserForm = document.getElementById('newUserForm');
-        const newUserPlanSelect = document.getElementById('newUserPlan');
-        const customDaysGroup = document.getElementById('customDaysGroup');
-        const customPlanDaysInput = document.getElementById('customPlanDays');
-        
         const userDetailsModal = document.getElementById('userDetailsModal');
         const closeUserModal = document.getElementById('closeUserModal');
         const paymentDetailsModal = document.getElementById('paymentDetailsModal');
         const closePaymentModal = document.getElementById('closePaymentModal');
-        const newUserModal = document.getElementById('newUserModal');
-        const closeNewUserModal = document.getElementById('closeNewUserModal');
-        const cancelNewUserBtn = document.getElementById('cancelNewUserBtn');
         const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
         const closeDeleteModal = document.getElementById('closeDeleteModal');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
@@ -975,11 +911,6 @@
                 }
             });
             
-            newUserBtn.addEventListener('click', () => {
-                newUserModal.style.display = 'flex';
-                setTimeout(() => { document.getElementById('newStoreName')?.focus(); }, 300);
-            });
-            
             tabBtns.forEach(btn => {
                 btn.addEventListener('click', () => { switchTab(btn.getAttribute('data-tab')); });
             });
@@ -993,20 +924,12 @@
             
             closeUserModal.addEventListener('click', () => userDetailsModal.style.display = 'none');
             closePaymentModal.addEventListener('click', () => paymentDetailsModal.style.display = 'none');
-            closeNewUserModal.addEventListener('click', closeNewUser);
-            cancelNewUserBtn.addEventListener('click', closeNewUser);
             closeDeleteModal.addEventListener('click', closeDeleteModalHandler);
             cancelDeleteBtn.addEventListener('click', closeDeleteModalHandler);
-            
-            newUserForm.addEventListener('submit', createNewUser);
-            newUserPlanSelect.addEventListener('change', function() {
-                customDaysGroup.style.display = this.value === 'custom' ? 'block' : 'none';
-            });
             
             window.addEventListener('click', (e) => {
                 if (e.target === userDetailsModal) userDetailsModal.style.display = 'none';
                 if (e.target === paymentDetailsModal) paymentDetailsModal.style.display = 'none';
-                if (e.target === newUserModal) closeNewUser();
                 if (e.target === deleteConfirmationModal) closeDeleteModalHandler();
                 if (e.target === imageViewer) imageViewer.style.display = 'none';
             });
@@ -1018,12 +941,6 @@
             confirmDeleteBtn.addEventListener('click', deletePayment);
             
             if (adminWhatsAppInput) new IMask(adminWhatsAppInput, { mask: '(00) 00000-0000', lazy: false });
-        }
-
-        function closeNewUser() {
-            newUserModal.style.display = 'none';
-            newUserForm.reset();
-            customDaysGroup.style.display = 'none';
         }
 
         function closeDeleteModalHandler() {
@@ -1328,74 +1245,6 @@
             } catch (error) {
                 console.error('Error deleting payment:', error);
                 showNotification('Erro ao excluir pagamento.', 'error');
-            }
-        }
-
-        async function createNewUser(e) {
-            e.preventDefault();
-            
-            const storeName = document.getElementById('newStoreName').value;
-            const email = document.getElementById('newUserEmail').value;
-            const password = document.getElementById('newUserPassword').value;
-            const phone = document.getElementById('newUserPhone').value;
-            const status = document.getElementById('newUserStatus').value;
-            const plan = document.getElementById('newUserPlan').value;
-            const customDays = plan === 'custom' ? parseInt(document.getElementById('customPlanDays').value) || 30 : 30;
-            
-            if (!phone || phone.replace(/\D/g, '').length < 11) {
-                showNotification('Informe um número de WhatsApp válido.', 'error');
-                return;
-            }
-            
-            if (plan === 'custom' && (customDays < 1 || customDays > 365)) {
-                showNotification('Os dias do plano personalizado devem estar entre 1 e 365.', 'error');
-                return;
-            }
-            
-            try {
-                showLoading();
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-                
-                await user.sendEmailVerification();
-                
-                let expiryDate = '';
-                if (status === 'active') {
-                    const date = new Date();
-                    date.setDate(date.getDate() + customDays);
-                    expiryDate = date.toISOString().split('T')[0];
-                }
-                
-                await db.collection('users').doc(user.uid).set({
-                    uid: user.uid,
-                    email: user.email,
-                    storeName: storeName,
-                    phone: phone,
-                    status: status,
-                    plan: plan,
-                    planDays: customDays,
-                    expiryDate: expiryDate,
-                    isActive: status === 'active',
-                    configCompleted: false,
-                    renewalStatus: 'none',
-                    createdAt: new Date().toISOString(),
-                    createdBy: adminUser.email,
-                    lastActivity: new Date().toISOString(),
-                    emailVerified: false
-                });
-                
-                closeNewUser();
-                await loadAllUsers();
-                showNotification('Usuário criado com sucesso! E-mail de verificação enviado.', 'success');
-                hideLoading();
-            } catch (error) {
-                console.error('Error creating user:', error);
-                let errorMessage = 'Erro ao criar usuário.';
-                if (error.code === 'auth/email-already-in-use') errorMessage = 'Este e-mail já está em uso.';
-                else if (error.code === 'auth/invalid-email') errorMessage = 'E-mail inválido.';
-                else if (error.code === 'auth/weak-password') errorMessage = 'Senha muito fraca. Use pelo menos 6 caracteres.';
-                showNotification(errorMessage, 'error');
-                hideLoading();
             }
         }
 
