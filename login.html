@@ -268,19 +268,6 @@
             padding-top: 24px;
             border-top: 1px solid var(--border-color);
         }
-        .form-footer a {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .form-footer a:hover {
-            color: var(--accent-hover);
-            text-decoration: underline;
-        }
         .notification {
             position: fixed;
             top: 50%;
@@ -461,7 +448,7 @@
         </form>
         
         <div class="form-footer">
-            <p>Problemas para acessar? <a href="#" id="resetPasswordBtn"><i class="fas fa-key"></i> Redefinir senha</a></p>
+            <p>Acesso restrito ao primeiro administrador registrado</p>
         </div>
     </div>
 
@@ -482,7 +469,6 @@
         const loginForm = document.getElementById('loginForm');
         const loginBtn = document.getElementById('loginBtn');
         const googleLoginBtn = document.getElementById('googleLoginBtn');
-        const resetPasswordBtn = document.getElementById('resetPasswordBtn');
         const passwordToggle = document.getElementById('passwordToggle');
         const passwordInput = document.getElementById('password');
         
@@ -546,7 +532,6 @@
         
         loginForm.addEventListener('submit', handleEmailLogin);
         googleLoginBtn.addEventListener('click', handleGoogleLogin);
-        resetPasswordBtn.addEventListener('click', handleResetPassword);
         
         async function handleEmailLogin(e) {
             e.preventDefault();
@@ -675,42 +660,6 @@
                 
             } catch (error) {
                 handleLoginError(error);
-            }
-        }
-        
-        async function handleResetPassword() {
-            const email = document.getElementById('email').value.trim();
-            
-            if (!email) {
-                showNotification('Digite seu e-mail para redefinir a senha', 'error');
-                return;
-            }
-            
-            if (!isValidEmail(email)) {
-                showNotification('Por favor, insira um e-mail válido', 'error');
-                return;
-            }
-            
-            try {
-                setButtonLoading(true);
-                
-                // Verifica se é o primeiro admin antes de permitir redefinição
-                const firstAdminDoc = await db.collection('admin').doc('firstAdmin').get();
-                if (firstAdminDoc.exists) {
-                    const firstAdminData = firstAdminDoc.data();
-                    if (email !== firstAdminData.email) {
-                        showNotification('Somente o primeiro administrador pode redefinir a senha.', 'error');
-                        setButtonLoading(false);
-                        return;
-                    }
-                }
-                
-                await auth.sendPasswordResetEmail(email);
-                showNotification('E-mail de redefinição enviado! Verifique sua caixa de entrada e spam.', 'success');
-            } catch (error) {
-                showNotification('Erro ao enviar e-mail de redefinição: ' + error.message, 'error');
-            } finally {
-                setButtonLoading(false);
             }
         }
         
