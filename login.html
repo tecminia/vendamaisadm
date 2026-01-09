@@ -835,9 +835,6 @@ window.addEventListener('appinstalled', () => {
   if (installButton.parentNode) {
     installButton.parentNode.removeChild(installButton);
   }
-  
-  // Atualiza analytics ou estatísticas
-  logEvent('pwa_installed');
 });
 
 // Mostra promoção de instalação
@@ -913,13 +910,6 @@ if ('serviceWorker' in navigator) {
         registration.addEventListener('updatefound', () => {
           const newWorker = registration.installing;
           console.log('Nova versão do Service Worker encontrada');
-          
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              console.log('Nova versão disponível!');
-              showUpdateNotification();
-            }
-          });
         });
       })
       .catch(error => {
@@ -928,24 +918,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Mostra notificação de atualização
-function showUpdateNotification() {
-  if (Notification.permission === 'granted') {
-    new Notification('Nova versão disponível!', {
-      body: 'Clique para atualizar o aplicativo',
-      icon: 'favicon.ico',
-      tag: 'update-available'
-    }).onclick = () => {
-      window.location.reload();
-    };
-  }
-}
-
 // ========== PWA UTILITIES ==========
-function logEvent(eventName, data = {}) {
-  // Implemente seu próprio logging (Firebase Analytics, etc.)
-  console.log(`[PWA Event] ${eventName}:`, data);
-}
 
 // Verifica se está rodando como PWA
 function isRunningAsPWA() {
